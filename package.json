@@ -1,0 +1,19 @@
+{
+  "name": "golf-best-ball",
+  "version": "1.0.0",
+  "description": "A website to play best ball with your friends during golf tournaments",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatthewCrocker7/golf-best-ball.git"
+  },
+  "author": "Matthew Crocker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatthewCrocker7/golf-best-ball/issues"
+  },
+  "homepage": "https://github.com/MatthewCrocker7/golf-best-ball#readme"
+}
