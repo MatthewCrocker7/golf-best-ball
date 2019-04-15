@@ -2,18 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import Header from './components/Header';
-import Game from './game/Game';
 
 const styles = () => ({
   root: {
     width: 'auto',
     display: 'block',
-  },
-  divider: {
-    marginTop: '2%',
-    marginBottom: '2%',
   },
   textStyle: {
     textAlign: 'center'
@@ -23,10 +16,8 @@ const styles = () => ({
 const App = (props) => {
   const { classes } = props;
   return (
-    <div className={classes.root}>
-      <Header />
-      <Divider className={classes.divider} color="primary" />
-      <Game />
+    <div>
+      <Typography className={classes.textStyle} variant="h1" color="primary">Best Ball</Typography>
     </div>
   );
 };
