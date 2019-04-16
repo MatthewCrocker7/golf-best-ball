@@ -5,8 +5,9 @@ import Player from './Player';
 
 const styles = () => ({
   root: {
-    width: 'auto',
+    width: '90%',
     display: 'block',
+    margin: 'auto'
   }
 });
 
@@ -14,7 +15,8 @@ const Game = (props) => {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <Player />
+      <Player playerId={1} />
+      <Player playerId={2} />
     </div>
   );
 };

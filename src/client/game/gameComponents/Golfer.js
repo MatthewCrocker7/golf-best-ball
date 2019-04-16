@@ -5,16 +5,18 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import seed from './seed';
 
+let id=1;
+
 const Golfer = (props) => {
   const { golfer } = props;
   return (
     <TableBody>
-      <TableRow key={golfer}>
+      <TableRow>
         <TableCell align="left" component="th" scope="row">
           {golfer}
         </TableCell>
         {seed.golferData[golfer].map(score => (
-          <TableCell align="right" component="th" scope="row">
+          <TableCell key={id++} align="center">
             {score}
           </TableCell>
         ))}
