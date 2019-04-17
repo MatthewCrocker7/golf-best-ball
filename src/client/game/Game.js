@@ -5,7 +5,7 @@ import Player from './Player';
 
 const styles = () => ({
   root: {
-    width: '90%',
+    width: '100%',
     display: 'block',
     margin: 'auto'
   }
@@ -16,7 +16,6 @@ const Game = (props) => {
   return (
     <div className={classes.root}>
       <Player playerId={1} />
-      <Player playerId={2} />
     </div>
   );
 };

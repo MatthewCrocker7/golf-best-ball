@@ -6,13 +6,15 @@ import Table from '@material-ui/core/Table';
 import GameHeader from './gameComponents/GameHeader';
 import Golfer from './gameComponents/Golfer';
 import BestBall from './gameComponents/BestBall';
+import seed from './gameComponents/seed';
 
 const styles = () => ({
   root: {
     width: 'auto',
-    display: 'block',
+    display: 'flex',
     border: '1px solid #34568f',
-    margin: '10px'
+    margin: '10px',
+    padding: '1px'
   },
 });
 
@@ -26,15 +28,16 @@ const Golfers = [
 let id = 1;
 
 const Player = (props) => {
-  const { classes, playerId } = props;
+  const { classes } = props;
   return (
     <div className={classes.root}>
+      <Typography className={classes.component} variant="h5">Matthew</Typography>
       <Table padding="dense">
         <GameHeader />
-        {Golfers.map(golfer => (
-          <Golfer key={id++} golfer={golfer} />
+        {seed.golferData.map(golfer => (
+          <Golfer key={golfer.name} name={golfer.name} scores={golfer.scores} />
         ))}
-        <BestBall />
+        <BestBall data={seed.golferData} />
       </Table>
     </div>
   );
