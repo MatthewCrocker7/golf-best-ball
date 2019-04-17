@@ -4,7 +4,6 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import seed from './seed';
 
 const _ = require('lodash');
 
