@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { Provider } from 'react-redux';
+import store from './redux/store/store';
 import App from './App';
+import './index.css';
 
 const theme = createMuiTheme({
   typography: {
@@ -9,20 +12,19 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      light: '#63a4ff',
-      main: '#1976d2',
-      dark: '#004ba0'
+      main: '#ffffff',
     },
     secondary: {
-      light: '#ffa4a2',
-      main: '#e57373',
+      main: '#0a8116',
     },
   },
 });
 
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <App />
-  </MuiThemeProvider>,
+  <Provider store={store}>
+    <MuiThemeProvider theme={theme}>
+      <App />
+    </MuiThemeProvider>
+  </Provider>,
   document.getElementById('root')
 );

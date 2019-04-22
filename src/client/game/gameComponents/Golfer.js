@@ -6,6 +6,8 @@ import TableRow from '@material-ui/core/TableRow';
 
 let id=1;
 
+const sum = holes => holes.reduce((total, num) => total + num);
+
 const Golfer = (props) => {
   const { name, scores } = props;
   return (
@@ -19,6 +21,9 @@ const Golfer = (props) => {
             {score}
           </TableCell>
         ))}
+        <TableCell align="center">
+          {sum(scores)}
+        </TableCell>
       </TableRow>
     </TableBody>
   );

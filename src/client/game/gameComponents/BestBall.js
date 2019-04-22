@@ -17,17 +17,16 @@ const getBest = (golfData) => {
   const g3 = parseData(data[2]);
   const g4 = parseData(data[3]);
 
-  const result = _.zipWith(g1, g2, g3, g4, (a, b, c, d) => Math.min(a, b, c, d));
-
-  console.log(result);
-
-  return result;
+  return _.zipWith(g1, g2, g3, g4, (a, b, c, d) => Math.min(a, b, c, d));
 };
 
-let id=1;
+const sum = holes => holes.reduce((total, num) => total + num);
+
+let id = 1;
 
 const BestBall = (props) => {
   const { classes, data } = props;
+  const scores = getBest(data);
 
   return (
     <TableBody>
@@ -35,15 +34,22 @@ const BestBall = (props) => {
         <TableCell align="left" component="th" scope="row">
           Best
         </TableCell>
-        {getBest(data).map(hole => (
+        {scores.map(hole => (
           <TableCell key={id++} align="center">
             {hole}
           </TableCell>
         ))}
+        <TableCell align="center">
+          {sum(scores)}
+        </TableCell>
       </TableRow>
     </TableBody>
   );
 };
 
+BestBall.propTypes = {
+  // classes: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired
+};
 
 export default BestBall;

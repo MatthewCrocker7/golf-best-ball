@@ -7,23 +7,28 @@ const styles = () => ({
   root: {
     width: 'auto',
     display: 'block',
+    margin: '0px',
+    backgroundColor: '#0a8116'
   },
   textStyle: {
     textAlign: 'center'
+  },
+  navText: {
+    textAlign: 'left'
   }
 });
 
-const App = (props) => {
+const Header = (props) => {
   const { classes } = props;
   return (
-    <div>
-      <Typography className={classes.textStyle} variant="h1" color="primary">Best Ball</Typography>
+    <div className={classes.root}>
+      <Typography className={classes.textStyle} variant="h2" color="primary">Best Ball</Typography>
     </div>
   );
 };
 
-App.propTypes = {
+Header.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(Header);
