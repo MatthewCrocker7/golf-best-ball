@@ -5,7 +5,17 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import seed from './seed';
 
-const GameHeader = () => {
+const styles = () => ({
+  root: {
+
+  },
+});
+
+const sum = holes => holes.map(x => x.par).reduce((total, num) => total + num);
+
+const GameHeader = (props) => {
+  const { classes } = props;
+
   return (
     <TableBody>
       <TableRow>
@@ -17,6 +27,10 @@ const GameHeader = () => {
             {hole.hole}
           </TableCell>
         ))}
+        <TableCell align="center">
+          Total
+        </TableCell>
+        <TableCell align="center" />
       </TableRow>
       <TableRow>
         <TableCell align="left" component="th" scope="row">
@@ -27,6 +41,12 @@ const GameHeader = () => {
             {hole.par}
           </TableCell>
         ))}
+        <TableCell align="center">
+          {sum(seed.holeData)}
+        </TableCell>
+        <TableCell align="center">
+          To Par
+        </TableCell>
       </TableRow>
     </TableBody>
   );

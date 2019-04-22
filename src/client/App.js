@@ -1,37 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
+import { connect } from 'react-redux';
 import Header from './components/Header';
+import NavBar from './components/NavBar';
 import Game from './game/Game';
+import Draft from './draft/Draft';
 
 const styles = () => ({
   root: {
     width: 'auto',
+    height: '100%',
     display: 'block',
+    backgroundColor: '#EFF7FF'
   },
-  divider: {
-    marginTop: '2%',
-    marginBottom: '2%',
-  },
-  textStyle: {
-    textAlign: 'center'
-  }
+});
+
+const mapStateToProps = state => ({
+  nav: state.nav
 });
 
 const App = (props) => {
-  const { classes } = props;
+  const { classes, nav } = props;
+
   return (
     <div className={classes.root}>
       <Header />
-      <Divider className={classes.divider} color="primary" />
-      <Game />
+      <NavBar />
+      {nav === 0 && <Game />}
+      {nav === 1 && <Draft />}
     </div>
   );
 };
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  nav: PropTypes.number.isRequired
 };
 
-export default withStyles(styles)(App);
+export default connect(mapStateToProps)(withStyles(styles)(App));
