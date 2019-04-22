@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
 class NavBar extends React.Component {
   state = {
     selected: 0
-  }
+  };
 
   handleChange = (value) => {
     const { select } = this.props;
