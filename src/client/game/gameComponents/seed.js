@@ -46,10 +46,28 @@ const golfRankings = [
   { name: 'Bubba Watson', rank: 17 },
   { name: 'Patrick Cantlay', rank: 18 },
   { name: 'Patrick Reed', rank: 19 },
+  { name: 'Webb Simpson', rank: 20 },
+  { name: 'Louis Oosthuizen', rank: 21 },
+  { name: 'Marc Leishman', rank: 22 },
+  { name: 'Phil Mickelson', rank: 23 },
+  { name: 'Gary Woodland', rank: 24 },
+  { name: 'Kevin Kisner', rank: 25 },
+  { name: 'Ian Poulter', rank: 26 },
+  { name: 'Hideki Matsuyama', rank: 27 },
+  { name: 'Adam Scott', rank: 28 },
+  { name: 'Sergio Garcia', rank: 29 },
+];
+
+const players = [
+  { name: 'Matthew', golfers: [] },
+  { name: 'Dentyn', golfers: [] },
+  { name: 'Jonathan', golfers: [] },
+  { name: 'Drew', golfers: [] },
 ];
 
 module.exports = {
   golferData,
   holeData,
-  golfRankings
+  golfRankings,
+  players
 };

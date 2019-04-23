@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import updateNav from '../redux/actions/actions';
+import actions from '../redux/actions/actions';
 import NavBarButton from './NavBarButton';
 
 const styles = () => ({
@@ -20,7 +20,7 @@ const styles = () => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  select: value => dispatch(updateNav(value))
+  selectNav: value => dispatch(actions.updateNav(value))
 });
 
 class NavBar extends React.Component {
@@ -29,8 +29,8 @@ class NavBar extends React.Component {
   };
 
   handleChange = (value) => {
-    const { select } = this.props;
-    select({ value });
+    const { selectNav } = this.props;
+    selectNav({ value });
     this.setState({ selected: value });
   }
 
@@ -51,7 +51,7 @@ class NavBar extends React.Component {
 
 NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  select: PropTypes.func.isRequired
+  selectNav: PropTypes.func.isRequired
 };
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(NavBar));
