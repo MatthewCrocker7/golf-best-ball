@@ -20,7 +20,7 @@ const GolferInfo = (props) => {
   return (
     <div className={classes.root}>
       <Typography className={classes.textStyle} variant="h5" color="secondary">Golfer info goes here</Typography>
-      <Typography className={classes.textStyle} variant="h5" color="secondary">Ideally want this frame to stick and scroll with user</Typography>
+      <Typography className={classes.textStyle} variant="h5" color="secondary">Display recent stats, history of the selected golfer</Typography>
     </div>
   );
 };

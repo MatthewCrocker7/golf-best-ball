@@ -18,21 +18,17 @@ const styles = () => ({
   },
   gridRoot: {
     width: 'auto',
-    margin: '0.5%',
+    marginLeft: '0.5%',
+    marginRight: '0.5%',
   },
   paperStyle: {
     width: 'auto',
     height: 'auto',
+    marginTop: 'auto',
     overflowX: 'visible',
-  },
-  testStyle: {
-    width: 'auto',
-    height: 'auto',
-    overflowX: 'visible',
-    topMargin: '10px'
   },
   textStyle: {
-    margin: 'auto',
+    margin: '0.5%',
     textAlign: 'center',
   }
 });
@@ -45,9 +41,13 @@ const Draft = (props) => {
       <StickyContainer>
         <Grid className={classes.gridRoot} container spacing={16}>
           <Grid item xs={4}>
-            <Paper className={classes.paperStyle}>
-              <PlayerTurn />
-            </Paper>
+            <Sticky topOffset={-80}>
+              {({ style, isSticky }) => (
+                <Paper style={{ ...style, marginTop: isSticky ? '80px' : '0px' }} className={classes.paperStyle}>
+                  <PlayerTurn />
+                </Paper>
+              )}
+            </Sticky>
           </Grid>
           <Grid item xs={4}>
             <Paper className={classes.paperStyle}>
@@ -57,7 +57,7 @@ const Draft = (props) => {
           <Grid item xs={4}>
             <Sticky topOffset={-80}>
               {({ style, isSticky }) => (
-                <Paper style={{ ...style, marginTop: isSticky ? '80px' : '0px' }} className={classes.testStyle}>
+                <Paper style={{ ...style, marginTop: isSticky ? '80px' : '0px' }} className={classes.paperStyle}>
                   <GolferInfo />
                 </Paper>
               )}
