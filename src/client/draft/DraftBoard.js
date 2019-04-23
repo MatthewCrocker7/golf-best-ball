@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import actions from '../redux/actions/actions';
 import seed from '../game/gameComponents/seed';
 
 const styles = theme => ({
@@ -19,12 +21,20 @@ const styles = theme => ({
   }
 });
 
+const mapDispatchToProps = dispatch => ({
+  selectGolfer: value => dispatch(actions.updateSelected(value))
+});
+
+const getGolferByIndex = index => seed.golfRankings.filter(x => x.rank === index)[0].name;
+
 class DraftBoard extends React.Component {
   state = {
     selectedIndex: -1
   };
 
   handleListItemClick = (_event, index) => {
+    const { selectGolfer } = this.props;
+    selectGolfer({ value: getGolferByIndex(index) });
     this.setState({ selectedIndex: index });
   };
 
@@ -70,7 +80,8 @@ class DraftBoard extends React.Component {
       */
 
 DraftBoard.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  selectGolfer: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(DraftBoard);
+export default connect(null, mapDispatchToProps)(withStyles(styles)(DraftBoard));
