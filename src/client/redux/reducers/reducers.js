@@ -27,14 +27,21 @@ const rootReducer = (state = initState, action) => {
     });
   }
   if (action.type === DRAFT_GOLFER) {
-    const otherPlayers = state.players.filter(x => (x.name !== action.payload.value.name));
+    const oldPlayers = state.players.filter(x => x.name !== action.payload.name);
+    const newPlayer = state.players.filter(x => x.name === action.payload.name)[0];
+    newPlayer.golfers.push(action.payload.golfer);
+    const testObj = Object.assign({}, state, {
+      players: [
+        ...oldPlayers,
+        newPlayer
+      ]
+    });
+    //...selectingPlayer, golfers: [...selectingPlayer.golfers, selectedGolfer]
+    console.log(testObj);
 
-    /*
-    return Object.assign({}, state, {
-      players: [...otherPlayers, {}]
-    })
-    */
+    return Object.assign({}, state);
   }
+
   return state;
 };
 
