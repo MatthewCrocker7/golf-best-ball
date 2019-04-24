@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import actions from '../redux/actions/actions';
-import seed from '../game/gameComponents/seed';
 
 const styles = theme => ({
   draftHeader: {
@@ -28,32 +27,60 @@ const styles = theme => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  selectGolfer: value => dispatch(actions.updateSelected(value))
+  draftGolfer: value => dispatch(actions.draftGolfer(value))
 });
+
 
 class DraftBar extends React.Component {
   state = {
-    selectingPlayer: seed.players[0],
+    index: 0,
+    snakeUp: true
   }
 
-  draftGolfer = () => {
-    const { selectedGolfer } = this.props;
-    const { selectingPlayer } = this.state;
+  snakeDraft = () => {
+    const { players } = this.props;
+    const { index, snakeUp } = this.state;
 
+    if (snakeUp) {
+      if (index === players.length - 1) {
+        this.setState({ snakeUp: false });
+      } else {
+        this.setState({ index: index + 1 });
+      }
+    } else if (index === 0) {
+      this.setState({ snakeUp: true });
+    } else {
+      this.setState({ index: index - 1 });
+    }
+  }
+
+  draft = () => {
+    const { draftGolfer, players, selectedGolfer } = this.props;
+    const { index } = this.state;
+
+    draftGolfer({
+      index,
+      name: players[index].name,
+      golfer: selectedGolfer
+    });
+    /*
     this.setState({
       selectingPlayer: { ...selectingPlayer, golfers: [...selectingPlayer.golfers, selectedGolfer] }
     });
+    */
+
+    this.snakeDraft();
   };
 
   render() {
-    const { classes } = this.props;
-    const { selectingPlayer } = this.state;
-    console.log(selectingPlayer);
+    const { classes, players } = this.props;
+    const { index } = this.state;
+    // console.log(players[index]);
 
     return (
       <div className={classes.draftHeader}>
-        <Typography className={classes.textStyle} variant="h6" color="secondary">{`Drafting: ${selectingPlayer.name}`}</Typography>
-        <Button className={classes.buttonStyle} onClick={this.draftGolfer} size="large" variant="contained" color="secondary">Draft</Button>
+        <Typography className={classes.textStyle} variant="h6" color="secondary">{`Drafting: ${players[index].name}`}</Typography>
+        <Button className={classes.buttonStyle} onClick={this.draft} size="large" variant="contained" color="secondary">Draft</Button>
       </div>
     );
   }
@@ -61,6 +88,9 @@ class DraftBar extends React.Component {
 
 DraftBar.propTypes = {
   classes: PropTypes.object.isRequired,
+  selectedGolfer: PropTypes.string.isRequired,
+  players: PropTypes.array.isRequired,
+  draftGolfer: PropTypes.func.isRequired
 };
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(DraftBar));
