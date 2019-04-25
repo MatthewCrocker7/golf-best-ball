@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -13,9 +13,7 @@ const styles = () => ({
 
 const sum = holes => holes.map(x => x.par).reduce((total, num) => total + num);
 
-const GameHeader = (props) => {
-  const { classes } = props;
-
+const GameHeader = () => {
   return (
     <TableBody>
       <TableRow>

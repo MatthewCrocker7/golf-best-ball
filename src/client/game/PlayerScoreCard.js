@@ -21,7 +21,7 @@ const styles = () => ({
 });
 
 const PlayerScoreCard = (props) => {
-  const { classes, name } = props;
+  const { classes, name, golfers } = props;
   return (
     <Paper className={classes.root}>
       <Typography color="secondary" className={classes.textStyle} variant="h5">{name}</Typography>
@@ -35,6 +35,17 @@ const PlayerScoreCard = (props) => {
     </Paper>
   );
 };
+
+/*
+<Typography color="secondary" className={classes.textStyle} variant="h5">{name}</Typography>
+      <Table padding="dense">
+        <GameHeader />
+        {seed.golferData.map(golfer => (
+          <Golfer key={golfer.name} name={golfer.name} scores={golfer.scores} />
+        ))}
+        <BestBall data={seed.golferData} />
+      </Table>
+*/
 
 PlayerScoreCard.propTypes = {
   classes: PropTypes.object.isRequired,

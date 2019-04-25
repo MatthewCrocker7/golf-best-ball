@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import Player from './PlayerScoreCard';
+import PlayerScoreCard from './PlayerScoreCard';
 
 const styles = () => ({
   root: {
@@ -11,20 +12,28 @@ const styles = () => ({
   }
 });
 
+const mapStateToProps = state => ({
+  players: state.players,
+});
+
 const Game = (props) => {
-  const { classes } = props;
+  const { classes, players } = props;
   return (
     <div className={classes.root}>
-      <Player name="Matthew" playerId={1} />
-      <Player name="Drew" playerId={1} />
-      <Player name="Jonathan" playerId={1} />
-      <Player name="Dentyn" playerId={1} />
+      {players.map(player => (
+        <PlayerScoreCard name={player.name} golfers={player.golfers} />
+      ))}
+      <PlayerScoreCard name="Matthew" />
+      <PlayerScoreCard name="Drew" />
+      <PlayerScoreCard name="Jonathan" />
+      <PlayerScoreCard name="Dentyn" />
     </div>
   );
 };
 
 Game.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  players: PropTypes.array.isRequired
 };
 
-export default withStyles(styles)(Game);
+export default connect(mapStateToProps)(withStyles(styles)(Game));
