@@ -39,13 +39,13 @@ class DraftBoard extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, draftBoard } = this.props;
     const { selectedIndex } = this.state;
 
     return (
       <div className={classes.root}>
-        <List component="ul">
-          {seed.golfRankings.map(x => (
+        <List dense component="ul">
+          {draftBoard.map(x => (
             <ListItem
               key={x.name}
               button
@@ -81,7 +81,8 @@ class DraftBoard extends React.Component {
 
 DraftBoard.propTypes = {
   classes: PropTypes.object.isRequired,
-  selectGolfer: PropTypes.func.isRequired
+  draftBoard: PropTypes.array.isRequired,
+  selectGolfer: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(DraftBoard));

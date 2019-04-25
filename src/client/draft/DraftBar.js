@@ -24,7 +24,19 @@ const styles = theme => ({
     margin: 'auto',
     fontWeight: theme.typography.fontWeightRegular * 2,
   },
+  textComplete: {
+    textAlign: 'center',
+    margin: 'auto',
+    fontWeight: theme.typography.fontWeightRegular * 2,
+  }
 });
+
+const validateData = (golfer) => {
+  if (golfer === '') {
+    return false;
+  }
+  return true;
+};
 
 const mapDispatchToProps = dispatch => ({
   draftGolfer: value => dispatch(actions.draftGolfer(value))
@@ -58,29 +70,40 @@ class DraftBar extends React.Component {
     const { draftGolfer, players, selectedGolfer } = this.props;
     const { index } = this.state;
 
+    if (!validateData(selectedGolfer)) {
+      return;
+    }
+
     draftGolfer({
-      index,
       name: players[index].name,
       golfer: selectedGolfer
     });
-    /*
-    this.setState({
-      selectingPlayer: { ...selectingPlayer, golfers: [...selectingPlayer.golfers, selectedGolfer] }
-    });
-    */
 
     this.snakeDraft();
   };
 
   render() {
-    const { classes, players } = this.props;
+    const {
+      classes,
+      players,
+      selectedGolfer,
+      draftComplete
+    } = this.props;
     const { index } = this.state;
-    // console.log(players[index]);
 
     return (
-      <div className={classes.draftHeader}>
-        <Typography className={classes.textStyle} variant="h6" color="secondary">{`Drafting: ${players[index].name}`}</Typography>
-        <Button className={classes.buttonStyle} onClick={this.draft} size="large" variant="contained" color="secondary">Draft</Button>
+      <div>
+        { draftComplete
+          ? (
+            <Typography variant="h4" color="secondary" className={classes.textComplete}>Draft Completed</Typography>
+          )
+          : (
+            <div className={classes.draftHeader}>
+              <Typography className={classes.textStyle} variant="h6" color="secondary">{`Drafting: ${players[index].name}`}</Typography>
+              <Button className={classes.buttonStyle} onClick={this.draft} size="large" variant="contained" color="secondary">Draft</Button>
+            </div>
+          )}
+        { !draftComplete && <Typography className={classes.textStyle} variant="h6" color="secondary">{`Selected: ${selectedGolfer}`}</Typography>}
       </div>
     );
   }
@@ -90,7 +113,8 @@ DraftBar.propTypes = {
   classes: PropTypes.object.isRequired,
   selectedGolfer: PropTypes.string.isRequired,
   players: PropTypes.array.isRequired,
-  draftGolfer: PropTypes.func.isRequired
+  draftGolfer: PropTypes.func.isRequired,
+  draftComplete: PropTypes.bool.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(DraftBar));
