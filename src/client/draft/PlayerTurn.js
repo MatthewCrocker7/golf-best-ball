@@ -19,6 +19,7 @@ const checkDraftCompletion = (players) => {
   const count = players.map(x => x.golfers.length).reduce(sum);
 
   if (count === checkSum) {
+    // Send to server, load game board
     return true;
   }
   return false;
