@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { StickyContainer, Sticky } from 'react-sticky';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
@@ -33,31 +34,43 @@ const styles = () => ({
   }
 });
 
+const mapStateToProps = state => ({
+  players: state.players,
+  selectedGolfer: state.selectedGolfer,
+  draftBoard: state.draftBoard
+});
+
 const Draft = (props) => {
-  const { classes } = props;
+  const {
+    classes,
+    draftBoard,
+    players,
+    selectedGolfer
+  } = props;
+
   return (
     <div className={classes.root}>
       <Typography className={classes.textStyle} color="secondary" variant="h4">Upcoming Tournament</Typography>
       <StickyContainer>
         <Grid className={classes.gridRoot} container spacing={16}>
-          <Grid item xs={4}>
-            <Sticky topOffset={-80}>
+          <Grid item xs={6}>
+            <Sticky topOffset={-40}>
               {({ style, isSticky }) => (
-                <Paper style={{ ...style, marginTop: isSticky ? '80px' : '0px' }} className={classes.paperStyle}>
-                  <PlayerTurn />
+                <Paper style={{ ...style, marginTop: isSticky ? '40px' : '0px' }} className={classes.paperStyle}>
+                  <PlayerTurn players={players} selectedGolfer={selectedGolfer} />
                 </Paper>
               )}
             </Sticky>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={2}>
             <Paper className={classes.paperStyle}>
-              <DraftBoard />
+              <DraftBoard draftBoard={draftBoard} />
             </Paper>
           </Grid>
           <Grid item xs={4}>
-            <Sticky topOffset={-80}>
+            <Sticky topOffset={-40}>
               {({ style, isSticky }) => (
-                <Paper style={{ ...style, marginTop: isSticky ? '80px' : '0px' }} className={classes.paperStyle}>
+                <Paper style={{ ...style, marginTop: isSticky ? '40px' : '0px' }} className={classes.paperStyle}>
                   <GolferInfo />
                 </Paper>
               )}
@@ -70,7 +83,10 @@ const Draft = (props) => {
 };
 
 Draft.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  draftBoard: PropTypes.array.isRequired,
+  selectedGolfer: PropTypes.string.isRequired,
+  players: PropTypes.array.isRequired
 };
 
-export default withStyles(styles)(Draft);
+export default connect(mapStateToProps)(withStyles(styles)(Draft));
