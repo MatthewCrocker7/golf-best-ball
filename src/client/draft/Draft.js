@@ -40,47 +40,75 @@ const mapStateToProps = state => ({
   draftBoard: state.draftBoard
 });
 
-const Draft = (props) => {
-  const {
-    classes,
-    draftBoard,
-    players,
-    selectedGolfer
-  } = props;
+class Draft extends React.Component {
+  state = {
+    nextTournament: ''
+  };
 
-  return (
-    <div className={classes.root}>
-      <Typography className={classes.textStyle} color="secondary" variant="h4">Upcoming Tournament</Typography>
-      <StickyContainer>
-        <Grid className={classes.gridRoot} container spacing={16}>
-          <Grid item xs={6}>
-            <Sticky topOffset={-40}>
-              {({ style, isSticky }) => (
-                <Paper style={{ ...style, marginTop: isSticky ? '40px' : '0px' }} className={classes.paperStyle}>
-                  <PlayerTurn players={players} selectedGolfer={selectedGolfer} />
-                </Paper>
-              )}
-            </Sticky>
+  componentDidMount = async () => {
+    try {
+      let response = await fetch('/api/pga/getTournament', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        response = await response.json();
+        this.setState({ nextTournament: response.tournament.name });
+      } else {
+        this.setState({ nextTournament: 'None this weekend' });
+      }
+      console.log(response);
+    } catch (error) {
+      console.log('Error getting next tournament.');
+      throw error;
+    }
+  };
+
+  render() {
+    const {
+      classes,
+      draftBoard,
+      players,
+      selectedGolfer
+    } = this.props;
+    const { nextTournament } = this.state;
+
+    return (
+      <div className={classes.root}>
+        <Typography className={classes.textStyle} color="secondary" variant="h4">{`Upcoming Tournament - ${nextTournament}`}</Typography>
+        <StickyContainer>
+          <Grid className={classes.gridRoot} container spacing={16}>
+            <Grid item xs={6}>
+              <Sticky topOffset={-40}>
+                {({ style, isSticky }) => (
+                  <Paper style={{ ...style, marginTop: isSticky ? '40px' : '0px' }} className={classes.paperStyle}>
+                    <PlayerTurn players={players} selectedGolfer={selectedGolfer} />
+                  </Paper>
+                )}
+              </Sticky>
+            </Grid>
+            <Grid item xs={2}>
+              <Paper className={classes.paperStyle}>
+                <DraftBoard draftBoard={draftBoard} />
+              </Paper>
+            </Grid>
+            <Grid item xs={4}>
+              <Sticky topOffset={-40}>
+                {({ style, isSticky }) => (
+                  <Paper style={{ ...style, marginTop: isSticky ? '40px' : '0px' }} className={classes.paperStyle}>
+                    <GolferInfo />
+                  </Paper>
+                )}
+              </Sticky>
+            </Grid>
           </Grid>
-          <Grid item xs={2}>
-            <Paper className={classes.paperStyle}>
-              <DraftBoard draftBoard={draftBoard} />
-            </Paper>
-          </Grid>
-          <Grid item xs={4}>
-            <Sticky topOffset={-40}>
-              {({ style, isSticky }) => (
-                <Paper style={{ ...style, marginTop: isSticky ? '40px' : '0px' }} className={classes.paperStyle}>
-                  <GolferInfo />
-                </Paper>
-              )}
-            </Sticky>
-          </Grid>
-        </Grid>
-      </StickyContainer>
-    </div>
-  );
-};
+        </StickyContainer>
+      </div>
+    );
+  }
+}
 
 Draft.propTypes = {
   classes: PropTypes.object.isRequired,

@@ -21,7 +21,7 @@ const styles = () => ({
 });
 
 const PlayerScoreCard = (props) => {
-  const { classes, name, golfers } = props;
+  const { classes, name } = props;
   return (
     <Paper className={classes.root}>
       <Typography color="secondary" className={classes.textStyle} variant="h5">{name}</Typography>
@@ -49,7 +49,7 @@ const PlayerScoreCard = (props) => {
 
 PlayerScoreCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(PlayerScoreCard);
