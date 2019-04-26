@@ -1,4 +1,4 @@
-const schedule = {
+module.exports = {
   tour: {
     id: 'b52068af-28e4-4e91-bdbb-037591b0ff84',
     alias: 'pga',
@@ -5740,5 +5740,3 @@ const schedule = {
       }
     }]
 };
-
-export default schedule;

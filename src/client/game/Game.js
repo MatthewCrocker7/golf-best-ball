@@ -21,7 +21,7 @@ const Game = (props) => {
   return (
     <div className={classes.root}>
       {players.map(player => (
-        <PlayerScoreCard name={player.name} golfers={player.golfers} />
+        <PlayerScoreCard key={player.name} name={player.name} golfers={player.golfers} />
       ))}
       <PlayerScoreCard name="Matthew" />
       <PlayerScoreCard name="Drew" />
