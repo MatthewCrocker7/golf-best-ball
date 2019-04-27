@@ -4,9 +4,15 @@ const pgaParser = require('../data/pgaParser');
 const router = new Router();
 
 /*
-Game screen should go current tournies, if any or display "no active games"
+Draft should be for next tournament
+Draft currently will have to overwrite existing game
+Round screen should pull current round
+Scores screen should update with round, but also persist round data for multiple days
+Game screen should go to current tournament, if any or display "no active games"
 Must collect updated tournament scores every 15 minutes, starting at first tee shot, ending at last
 Must track tournament schedule - before a tourney give option to draft for new game
+Draft period should be between World Rankings update and tournament start
+Must update world golf ranks every Monday
 Must keep track of players, and their golfers
 
 1. Draft Complete
@@ -28,8 +34,9 @@ router.get('/getTournament', async (req, res) => {
   // console.log(tournament.name);
   if (tournament) {
     res.send({ tournament });
+  } else {
+    res.sendStatus(404);
   }
-  res.sendStatus(404);
 });
 
 module.exports = router;

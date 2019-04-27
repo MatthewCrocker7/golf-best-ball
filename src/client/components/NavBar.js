@@ -12,7 +12,7 @@ const styles = () => ({
     backgroundColor: '#ffffff'
   },
   buttonContainer: {
-    width: '20%',
+    width: '24%',
     marginLeft: '10%',
     display: 'flex',
     margin: 0
@@ -41,8 +41,9 @@ class NavBar extends React.Component {
     return (
       <div className={classes.root}>
         <div className={classes.buttonContainer}>
-          <NavBarButton onChange={this.handleChange} value={0} selected={selected} text="Game" />
-          <NavBarButton onChange={this.handleChange} value={1} selected={selected} text="Draft" />
+          <NavBarButton onChange={this.handleChange} value={0} selected={selected} text="Draft" />
+          <NavBarButton onChange={this.handleChange} value={1} selected={selected} text="Round" />
+          <NavBarButton onChange={this.handleChange} value={2} selected={selected} text="Scores" />
         </div>
       </div>
     );

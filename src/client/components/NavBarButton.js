@@ -6,13 +6,13 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
-    width: '50%',
+    width: '33%',
     display: 'block',
     margin: '0px',
     backgroundColor: '#ffffff'
   },
   rootLoaded: {
-    width: '50%',
+    width: '33%',
     display: 'block',
     margin: '0px',
     backgroundColor: '#ffffff',
