@@ -39,43 +39,42 @@ const validateData = (golfer) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  draftGolfer: value => dispatch(actions.draftGolfer(value))
+  draftGolfer: value => dispatch(actions.draftGolfer(value)),
+  updateDraft: value => dispatch(actions.updateDraft(value))
 });
 
 
 class DraftBar extends React.Component {
-  state = {
-    index: 0,
-    snakeUp: true
-  }
-
   snakeDraft = () => {
-    const { players } = this.props;
-    const { index, snakeUp } = this.state;
+    const { draft, players, updateDraft } = this.props;
 
-    if (snakeUp) {
-      if (index === players.length - 1) {
-        this.setState({ snakeUp: false });
+    if (draft.snakeUp) {
+      if (draft.index === players.length - 1) {
+        updateDraft({ snakeUp: false, index: draft.index });
       } else {
-        this.setState({ index: index + 1 });
+        updateDraft({ snakeUp: draft.snakeUp, index: draft.index + 1 });
       }
-    } else if (index === 0) {
-      this.setState({ snakeUp: true });
+    } else if (draft.index === 0) {
+      updateDraft({ snakeUp: true, index: draft.index });
     } else {
-      this.setState({ index: index - 1 });
+      updateDraft({ snakeUp: draft.snakeUp, index: draft.index - 1 });
     }
   }
 
   draft = () => {
-    const { draftGolfer, players, selectedGolfer } = this.props;
-    const { index } = this.state;
+    const {
+      draft,
+      draftGolfer,
+      players,
+      selectedGolfer
+    } = this.props;
 
     if (!validateData(selectedGolfer)) {
       return;
     }
 
     draftGolfer({
-      name: players[index].name,
+      name: players[draft.index].name,
       golfer: selectedGolfer
     });
 
@@ -85,11 +84,11 @@ class DraftBar extends React.Component {
   render() {
     const {
       classes,
+      draft,
       players,
       selectedGolfer,
       draftComplete
     } = this.props;
-    const { index } = this.state;
 
     return (
       <div>
@@ -99,7 +98,7 @@ class DraftBar extends React.Component {
           )
           : (
             <div className={classes.draftHeader}>
-              <Typography className={classes.textStyle} variant="h6" color="secondary">{`Drafting: ${players[index].name}`}</Typography>
+              <Typography className={classes.textStyle} variant="h6" color="secondary">{`Drafting: ${players[draft.index].name}`}</Typography>
               <Button className={classes.buttonStyle} onClick={this.draft} size="large" variant="contained" color="secondary">Draft</Button>
             </div>
           )}
@@ -111,9 +110,11 @@ class DraftBar extends React.Component {
 
 DraftBar.propTypes = {
   classes: PropTypes.object.isRequired,
+  draft: PropTypes.object.isRequired,
   selectedGolfer: PropTypes.string.isRequired,
   players: PropTypes.array.isRequired,
   draftGolfer: PropTypes.func.isRequired,
+  updateDraft: PropTypes.func.isRequired,
   draftComplete: PropTypes.bool.isRequired,
 };
 

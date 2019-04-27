@@ -1,6 +1,7 @@
 import {
   UPDATE_NAV,
   UPDATE_SELECTED,
+  UPDATE_DRAFT,
   DRAFT_GOLFER
 } from '../constants/action-types';
 
@@ -14,6 +15,11 @@ const updateSelected = value => ({
   payload: value
 });
 
+const updateDraft = value => ({
+  type: UPDATE_DRAFT,
+  payload: value
+});
+
 const draftGolfer = value => ({
   type: DRAFT_GOLFER,
   payload: value
@@ -22,5 +28,6 @@ const draftGolfer = value => ({
 export default {
   updateNav,
   updateSelected,
+  updateDraft,
   draftGolfer
 };

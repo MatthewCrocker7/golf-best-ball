@@ -37,6 +37,7 @@ const styles = () => ({
 const mapStateToProps = state => ({
   players: state.players,
   selectedGolfer: state.selectedGolfer,
+  draft: state.draft,
   draftBoard: state.draftBoard
 });
 
@@ -69,6 +70,7 @@ class Draft extends React.Component {
   render() {
     const {
       classes,
+      draft,
       draftBoard,
       players,
       selectedGolfer
@@ -77,14 +79,14 @@ class Draft extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Typography className={classes.textStyle} color="secondary" variant="h4">{`Upcoming Tournament - ${nextTournament}`}</Typography>
+        <Typography className={classes.textStyle} color="secondary" variant="h4">{`Drafting For - ${nextTournament}`}</Typography>
         <StickyContainer>
           <Grid className={classes.gridRoot} container spacing={16}>
             <Grid item xs={6}>
               <Sticky topOffset={-40}>
                 {({ style, isSticky }) => (
                   <Paper style={{ ...style, marginTop: isSticky ? '40px' : '0px' }} className={classes.paperStyle}>
-                    <PlayerTurn players={players} selectedGolfer={selectedGolfer} />
+                    <PlayerTurn draft={draft} players={players} selectedGolfer={selectedGolfer} />
                   </Paper>
                 )}
               </Sticky>
@@ -112,6 +114,7 @@ class Draft extends React.Component {
 
 Draft.propTypes = {
   classes: PropTypes.object.isRequired,
+  draft: PropTypes.object.isRequired,
   draftBoard: PropTypes.array.isRequired,
   selectedGolfer: PropTypes.string.isRequired,
   players: PropTypes.array.isRequired

@@ -1,6 +1,7 @@
 import {
   UPDATE_NAV,
   UPDATE_SELECTED,
+  UPDATE_DRAFT,
   DRAFT_GOLFER
 } from '../constants/action-types';
 
@@ -13,6 +14,10 @@ const initState = {
     { name: 'Jonathan', golfers: [] },
     { name: 'Drew', golfers: [] },
   ],
+  draft: {
+    index: 0,
+    snakeUp: true
+  },
   draftBoard: [
     { name: 'Dustin Johnson', rank: 1 },
     { name: 'Justin Rose', rank: 2 },
@@ -56,6 +61,15 @@ const rootReducer = (state = initState, action) => {
     return Object.assign({}, state, {
       selectedGolfer: action.payload.value
     });
+  }
+  if (action.type === UPDATE_DRAFT) {
+    return {
+      ...state,
+      draft: {
+        index: action.payload.index,
+        snakeUp: action.payload.snakeUp
+      }
+    };
   }
   if (action.type === DRAFT_GOLFER) {
     const updatedPlayers = state.players.map((player) => {

@@ -26,11 +26,21 @@ const checkDraftCompletion = (players) => {
 };
 
 const PlayerTurn = (props) => {
-  const { classes, players, selectedGolfer } = props;
+  const {
+    classes,
+    draft,
+    players,
+    selectedGolfer
+  } = props;
   const draftComplete = checkDraftCompletion(players);
   return (
     <div className={classes.root}>
-      <DraftBar players={players} selectedGolfer={selectedGolfer} draftComplete={draftComplete} />
+      <DraftBar
+        draft={draft}
+        players={players}
+        selectedGolfer={selectedGolfer}
+        draftComplete={draftComplete}
+      />
       <DraftSelection players={players} />
     </div>
   );
@@ -38,6 +48,7 @@ const PlayerTurn = (props) => {
 
 PlayerTurn.propTypes = {
   classes: PropTypes.object.isRequired,
+  draft: PropTypes.object.isRequired,
   selectedGolfer: PropTypes.string.isRequired,
   players: PropTypes.array.isRequired
 };
