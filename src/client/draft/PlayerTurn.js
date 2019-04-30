@@ -49,7 +49,7 @@ const PlayerTurn = (props) => {
 PlayerTurn.propTypes = {
   classes: PropTypes.object.isRequired,
   draft: PropTypes.object.isRequired,
-  selectedGolfer: PropTypes.string.isRequired,
+  selectedGolfer: PropTypes.object.isRequired,
   players: PropTypes.array.isRequired
 };
 

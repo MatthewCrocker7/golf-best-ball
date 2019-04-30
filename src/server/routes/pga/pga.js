@@ -20,14 +20,21 @@ Must keep track of players, and their golfers
 
 3 Tables
 1st
-GAME_ID | PLAYER1 | PLAYER2| PLAYER3 | PLAYER4
+GAME_ID (server generated) | TOURNAMENT_ID | TOURNAMENT_NAME | PLAYER1 | PLAYER2| PLAYER3 | PLAYER4 Player should eventually be based on generated ID on account creation
 
 2nd
-PLAYER_ID | GOLFER1 | GOLFER2 | GOLFER3 | GOLFER4
+PLAYER_ID | GAME_ID | GOLFER1 | GOLFER2 | GOLFER3 | GOLFER4 | SCORES
 
 3rd
-GOLFER | ROUND1_SCORES | ROUND2_SCORES | ROUND3_SCORES | ROUND4_SCORES
+GOLFER | TOURNAMENT_ID | ROUND1_SCORES | ROUND2_SCORES | ROUND3_SCORES | ROUND4_SCORES
 */
+
+router.get('/getWorldRankings', async (req, res) => {
+  const rankings = await pgaParser.getWorldRankings();
+  // console.log(rankings);
+
+  res.send(rankings);
+});
 
 router.get('/getTournament', async (req, res) => {
   const tournament = pgaParser.getTournament();
@@ -37,6 +44,10 @@ router.get('/getTournament', async (req, res) => {
   } else {
     res.sendStatus(404);
   }
+});
+
+router.post('/newGame', async (req, res) => {
+
 });
 
 module.exports = router;

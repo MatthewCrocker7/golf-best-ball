@@ -22,20 +22,47 @@ const styles = theme => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  selectGolfer: value => dispatch(actions.updateSelected(value))
+  selectGolfer: value => dispatch(actions.updateSelected(value)),
+  setDraftBoard: value => dispatch(actions.setDraftBoard(value))
 });
 
-const getGolferByIndex = index => seed.golfRankings.filter(x => x.rank === index)[0].name;
+// const getGolferByIndex = index => seed.golfRankings.filter(x => x.rank === index)[0].name;
 
 class DraftBoard extends React.Component {
-  state = {
-    selectedIndex: -1
-  };
+  constructor(props) {
+    super(props);
 
-  handleListItemClick = (_event, index) => {
+    this.state = {
+      selectedIndex: -1,
+    };
+
+    this.getRankings();
+  }
+
+  getRankings = async () => {
+    const { setDraftBoard } = this.props;
+    try {
+      let response = await fetch('/api/pga/getWorldRankings', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        response = await response.json();
+        setDraftBoard({ value: response });
+        // console.log(response);
+      }
+    } catch (error) {
+      console.log('Error getting next tournament.');
+      throw error;
+    }
+  }
+
+  handleListItemClick = (_event, name, rank) => {
     const { selectGolfer } = this.props;
-    selectGolfer({ value: getGolferByIndex(index) });
-    this.setState({ selectedIndex: index });
+    selectGolfer({ name, rank });
+    this.setState({ selectedIndex: rank });
   };
 
   render() {
@@ -50,7 +77,7 @@ class DraftBoard extends React.Component {
               key={x.name}
               button
               selected={selectedIndex === x.rank}
-              onClick={event => this.handleListItemClick(event, x.rank)}
+              onClick={event => this.handleListItemClick(event, x.name, x.rank)}
             >
               <ListItemText
                 primary={x.name}
@@ -83,6 +110,7 @@ DraftBoard.propTypes = {
   classes: PropTypes.object.isRequired,
   draftBoard: PropTypes.array.isRequired,
   selectGolfer: PropTypes.func.isRequired,
+  setDraftBoard: PropTypes.func.isRequired
 };
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(DraftBoard));

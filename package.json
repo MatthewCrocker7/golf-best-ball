@@ -28,6 +28,7 @@
     "express": "^4.16.4",
     "express-promise-router": "^3.0.3",
     "lodash": "^4.17.11",
+    "node-cache": "^4.2.0",
     "pg": "^7.10.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
@@ -35,6 +36,8 @@
     "react-redux": "^7.0.2",
     "react-sticky": "^6.0.3",
     "redux": "^4.0.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "typeface-roboto": "0.0.54"
   },
   "devDependencies": {
