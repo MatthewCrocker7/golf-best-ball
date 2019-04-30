@@ -60,7 +60,7 @@ class Draft extends React.Component {
       } else {
         this.setState({ nextTournament: 'None this weekend' });
       }
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.log('Error getting next tournament.');
       throw error;
@@ -116,7 +116,7 @@ Draft.propTypes = {
   classes: PropTypes.object.isRequired,
   draft: PropTypes.object.isRequired,
   draftBoard: PropTypes.array.isRequired,
-  selectedGolfer: PropTypes.string.isRequired,
+  selectedGolfer: PropTypes.object.isRequired,
   players: PropTypes.array.isRequired
 };
 

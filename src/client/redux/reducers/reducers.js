@@ -2,12 +2,16 @@ import {
   UPDATE_NAV,
   UPDATE_SELECTED,
   UPDATE_DRAFT,
-  DRAFT_GOLFER
+  DRAFT_GOLFER,
+  SET_DRAFT_BOARD
 } from '../constants/action-types';
 
 const initState = {
   nav: 0,
-  selectedGolfer: '',
+  selectedGolfer: {
+    name: '',
+    rank: -1
+  },
   players: [
     { name: 'Matthew', golfers: [] },
     { name: 'Dentyn', golfers: [] },
@@ -18,37 +22,7 @@ const initState = {
     index: 0,
     snakeUp: true
   },
-  draftBoard: [
-    { name: 'Dustin Johnson', rank: 1 },
-    { name: 'Justin Rose', rank: 2 },
-    { name: 'Brooks Koepka', rank: 3 },
-    { name: 'Rory Mcllroy', rank: 4 },
-    { name: 'Justin Thomas', rank: 5 },
-    { name: 'Tiger Woods', rank: 6 },
-    { name: 'Francesco Molinari', rank: 7 },
-    { name: 'Bryson DeChambeau', rank: 8 },
-    { name: 'Xander Schauffele', rank: 9 },
-    { name: 'Rickie Fowler', rank: 10 },
-    { name: 'Jon Rahm', rank: 11 },
-    { name: 'Matt Kuchar', rank: 12 },
-    { name: 'Paul Casey', rank: 13 },
-    { name: 'Jason Day', rank: 14 },
-    { name: 'Tony Finau', rank: 15 },
-    { name: 'Tommy Fleetwood', rank: 16 },
-    { name: 'Bubba Watson', rank: 17 },
-    { name: 'Patrick Cantlay', rank: 18 },
-    { name: 'Patrick Reed', rank: 19 },
-    { name: 'Webb Simpson', rank: 20 },
-    { name: 'Louis Oosthuizen', rank: 21 },
-    { name: 'Marc Leishman', rank: 22 },
-    { name: 'Phil Mickelson', rank: 23 },
-    { name: 'Gary Woodland', rank: 24 },
-    { name: 'Kevin Kisner', rank: 25 },
-    { name: 'Ian Poulter', rank: 26 },
-    { name: 'Hideki Matsuyama', rank: 27 },
-    { name: 'Adam Scott', rank: 28 },
-    { name: 'Sergio Garcia', rank: 29 },
-  ]
+  draftBoard: []
 };
 
 const rootReducer = (state = initState, action) => {
@@ -59,7 +33,10 @@ const rootReducer = (state = initState, action) => {
   }
   if (action.type === UPDATE_SELECTED) {
     return Object.assign({}, state, {
-      selectedGolfer: action.payload.value
+      selectedGolfer: {
+        name: action.payload.name,
+        rank: action.payload.rank
+      }
     });
   }
   if (action.type === UPDATE_DRAFT) {
@@ -85,7 +62,7 @@ const rootReducer = (state = initState, action) => {
       return player;
     });
 
-    const newBoard = state.draftBoard.filter(golfer => golfer.name !== state.selectedGolfer);
+    const newBoard = state.draftBoard.filter(golfer => golfer.rank !== state.selectedGolfer.rank);
 
     return {
       ...state,
@@ -95,12 +72,21 @@ const rootReducer = (state = initState, action) => {
       draftBoard: [
         ...newBoard
       ],
-      selectedGolfer: ''
+      selectedGolfer: {
+        name: '',
+        rank: -1
+      }
     };
     // ...selectingPlayer, golfers: [...selectingPlayer.golfers, selectedGolfer]
     // console.log(testObj);
 
     // return Object.assign({}, state);
+  }
+  if (action.type === SET_DRAFT_BOARD) {
+    return {
+      ...state,
+      draftBoard: action.payload.value
+    };
   }
 
   return state;

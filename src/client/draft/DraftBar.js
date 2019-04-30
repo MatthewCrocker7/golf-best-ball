@@ -75,7 +75,7 @@ class DraftBar extends React.Component {
 
     draftGolfer({
       name: players[draft.index].name,
-      golfer: selectedGolfer
+      golfer: selectedGolfer.name
     });
 
     this.snakeDraft();
@@ -102,7 +102,7 @@ class DraftBar extends React.Component {
               <Button className={classes.buttonStyle} onClick={this.draft} size="large" variant="contained" color="secondary">Draft</Button>
             </div>
           )}
-        { !draftComplete && <Typography className={classes.textStyle} variant="h6" color="secondary">{`Selected: ${selectedGolfer}`}</Typography>}
+        { !draftComplete && <Typography className={classes.textStyle} variant="h6" color="secondary">{`Selected: ${selectedGolfer.name}`}</Typography>}
       </div>
     );
   }
@@ -111,7 +111,7 @@ class DraftBar extends React.Component {
 DraftBar.propTypes = {
   classes: PropTypes.object.isRequired,
   draft: PropTypes.object.isRequired,
-  selectedGolfer: PropTypes.string.isRequired,
+  selectedGolfer: PropTypes.object.isRequired,
   players: PropTypes.array.isRequired,
   draftGolfer: PropTypes.func.isRequired,
   updateDraft: PropTypes.func.isRequired,
