@@ -47,7 +47,8 @@ router.get('/getTournament', async (req, res) => {
 });
 
 router.post('/newGame', async (req, res) => {
-
+  const response = await pgaParser.saveNewGame(req);
+  res.send({ test: 'hi' });
 });
 
 module.exports = router;

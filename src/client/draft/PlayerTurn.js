@@ -14,12 +14,31 @@ const styles = () => ({
 
 const sum = (acc, cur) => acc + cur;
 
+const saveNewGame = async () => {
+  try {
+    let response = await fetch('/api/pga/newGame', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (response.ok) {
+      response = await response.json();
+      console.log(response);
+    }
+    // console.log(response);
+  } catch (error) {
+    console.log('Error saving new tournament.');
+    throw error;
+  }
+};
+
 const checkDraftCompletion = (players) => {
   const checkSum = players.length * 4;
   const count = players.map(x => x.golfers.length).reduce(sum);
 
   if (count === checkSum) {
-    // Send to server, load game board
+    saveNewGame();
     return true;
   }
   return false;
