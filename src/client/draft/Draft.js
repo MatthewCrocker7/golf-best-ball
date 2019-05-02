@@ -43,7 +43,10 @@ const mapStateToProps = state => ({
 
 class Draft extends React.Component {
   state = {
-    nextTournament: ''
+    tournament: {
+      name: '',
+      id: ''
+    }
   };
 
   componentDidMount = async () => {
@@ -56,9 +59,14 @@ class Draft extends React.Component {
       });
       if (response.ok) {
         response = await response.json();
-        this.setState({ nextTournament: response.tournament.name });
+        this.setState({ tournament: response.tournament });
       } else {
-        this.setState({ nextTournament: 'None this weekend' });
+        this.setState({
+          tournament: {
+            name: 'None this weekend',
+            id: ''
+          }
+        });
       }
       // console.log(response);
     } catch (error) {
@@ -75,11 +83,11 @@ class Draft extends React.Component {
       players,
       selectedGolfer
     } = this.props;
-    const { nextTournament } = this.state;
+    const { tournament } = this.state;
 
     return (
       <div className={classes.root}>
-        <Typography className={classes.textStyle} color="secondary" variant="h4">{`Drafting For - ${nextTournament}`}</Typography>
+        <Typography className={classes.textStyle} color="secondary" variant="h4">{`Drafting For - ${tournament.name}`}</Typography>
         <StickyContainer>
           <Grid className={classes.gridRoot} container spacing={16}>
             <Grid item xs={6}>
