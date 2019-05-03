@@ -39,7 +39,7 @@ const getWorldRankings = async () => {
 
 const saveNewGame = async (data) => {
   try {
-    const query = 'INSERT INTO public.GAME_INFO'
+    const query = 'INSERT INTO public."GAME_INFO"'
     + ' (GAME_ID, TOURNAMENT_ID, TOURNAMENT_NAME, PLAYER_ONE, PLAYER_TWO, PLAYER_THREE, PLAYER_FOUR)'
     + ' VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT (GAME_ID)'
     + ' DO UPDATE SET GAME_ID = $1, TOURNAMENT_ID = $2, TOURNAMENT_NAME = $3, PLAYER_ONE = $4,'
