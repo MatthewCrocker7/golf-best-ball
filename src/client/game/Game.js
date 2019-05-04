@@ -40,7 +40,6 @@ class Game extends React.Component {
           'Content-Type': 'application/json',
         },
       });
-      console.log(response);
       response = await response.json();
       console.log(response);
       this.setState({ currentRound: response });
