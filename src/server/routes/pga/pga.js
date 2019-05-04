@@ -16,11 +16,9 @@ Must update world golf ranks every Monday
 Must keep track of players, and their golfers
 */
 
-/*
 setInterval(async () => {
   pgaParser.updateScores();
-}, 60000);
-*/
+}, 7200000);
 
 router.get('/getWorldRankings', async (req, res) => {
   const rankings = await pgaParser.getWorldRankings();
@@ -46,7 +44,6 @@ router.post('/newGame/', async (req, res) => {
 
 router.get('/getCurrentRound/:gameId', async (req, res) => {
   const response = await pgaParser.getCurrentRoundScores(req.params.gameId);
-  console.log(response);
 
   res.send(response);
 });
