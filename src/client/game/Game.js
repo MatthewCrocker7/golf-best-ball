@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import PlayerScoreCard from './PlayerScoreCard';
 
 const styles = () => ({
@@ -9,6 +10,10 @@ const styles = () => ({
     width: 'auto',
     display: 'block',
     margin: 'auto'
+  },
+  textStyle: {
+    margin: '0.5%',
+    textAlign: 'center',
   }
 });
 
@@ -55,6 +60,11 @@ class Game extends React.Component {
 
     return (
       <div className={classes.root}>
+        {currentRound.length > 0 && (
+          <Typography className={classes.textStyle} color="secondary" variant="h4">
+            {`${currentRound[0][0].tournament_name} - Round ${currentRound[0][0].round}`}
+          </Typography>
+        )}
         {currentRound.map(player => (
           <PlayerScoreCard info={player} key={player[0].player_id} />
         ))}
