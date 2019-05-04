@@ -16,26 +16,6 @@ const mapStateToProps = state => ({
   players: state.players,
 });
 
-/*
-const getCurrentRound = async () => {
-  const gameId = '21111111-1111-1111-1111-111111111111';
-  try {
-    let response = await fetch(`/api/pga/getCurrentRound/${gameId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    response = await response.json();
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log('Get current round error');
-    throw error;
-  }
-};
-*/
-
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -44,6 +24,10 @@ class Game extends React.Component {
       currentRound: []
     };
 
+    // this.getCurrentRound();
+  }
+
+  componentDidMount() {
     this.getCurrentRound();
   }
 
