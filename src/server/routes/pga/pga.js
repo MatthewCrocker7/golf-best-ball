@@ -46,6 +46,7 @@ router.post('/newGame/', async (req, res) => {
 
 router.get('/getCurrentRound/:gameId', async (req, res) => {
   const response = await pgaParser.getCurrentRoundScores(req.params.gameId);
+  console.log(response);
 
   res.send(response);
 });
