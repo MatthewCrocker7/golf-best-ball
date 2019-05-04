@@ -75,7 +75,8 @@ class DraftBar extends React.Component {
 
     draftGolfer({
       name: players[draft.index].name,
-      golfer: selectedGolfer.name
+      golfer: selectedGolfer.name,
+      id: selectedGolfer.id
     });
 
     this.snakeDraft();

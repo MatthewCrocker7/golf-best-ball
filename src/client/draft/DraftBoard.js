@@ -6,7 +6,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import actions from '../redux/actions/actions';
-import seed from '../game/gameComponents/seed';
 
 const styles = theme => ({
   root: {
@@ -59,9 +58,9 @@ class DraftBoard extends React.Component {
     }
   }
 
-  handleListItemClick = (_event, name, rank) => {
+  handleListItemClick = (_event, name, rank, id) => {
     const { selectGolfer } = this.props;
-    selectGolfer({ name, rank });
+    selectGolfer({ name, rank, id });
     this.setState({ selectedIndex: rank });
   };
 
@@ -77,7 +76,7 @@ class DraftBoard extends React.Component {
               key={x.name}
               button
               selected={selectedIndex === x.rank}
-              onClick={event => this.handleListItemClick(event, x.name, x.rank)}
+              onClick={event => this.handleListItemClick(event, x.name, x.rank, x.id)}
             >
               <ListItemText
                 primary={x.name}

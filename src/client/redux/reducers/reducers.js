@@ -10,13 +10,14 @@ const initState = {
   nav: 0,
   selectedGolfer: {
     name: '',
-    rank: -1
+    rank: -1,
+    id: ''
   },
   players: [
-    { name: 'Matthew', golfers: [] },
-    { name: 'Dentyn', golfers: [] },
-    { name: 'Jonathan', golfers: [] },
-    { name: 'Drew', golfers: [] },
+    { name: 'Matthew', id: '11111111-1111-1111-1111-111111111111', golfers: [] },
+    { name: 'Dentyn', id: '21111111-1111-1111-1111-111111111111', golfers: [] },
+    { name: 'Jonathan', id: '31111111-1111-1111-1111-111111111111', golfers: [] },
+    { name: 'Drew', id: '41111111-1111-1111-1111-111111111111', golfers: [] },
   ],
   draft: {
     index: 0,
@@ -35,7 +36,8 @@ const rootReducer = (state = initState, action) => {
     return Object.assign({}, state, {
       selectedGolfer: {
         name: action.payload.name,
-        rank: action.payload.rank
+        rank: action.payload.rank,
+        id: action.payload.id
       }
     });
   }
@@ -55,7 +57,10 @@ const rootReducer = (state = initState, action) => {
           ...player,
           golfers: [
             ...player.golfers,
-            action.payload.golfer
+            {
+              name: action.payload.golfer,
+              id: action.payload.id
+            }
           ]
         };
       }
@@ -74,7 +79,8 @@ const rootReducer = (state = initState, action) => {
       ],
       selectedGolfer: {
         name: '',
-        rank: -1
+        rank: -1,
+        id: ''
       }
     };
     // ...selectingPlayer, golfers: [...selectingPlayer.golfers, selectedGolfer]

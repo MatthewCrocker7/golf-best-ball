@@ -41,8 +41,8 @@ const DraftSelection = (props) => {
               {player.name}
             </TableCell>
             {player.golfers.map(x => (
-              <TableCell key={x} align="center">
-                {x}
+              <TableCell key={x.id} align="center">
+                {x.name}
               </TableCell>
             ))}
           </TableRow>
