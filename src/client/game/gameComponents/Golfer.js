@@ -4,8 +4,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-let id = 1;
-
 const sum = holes => holes.reduce((total, num) => total + num);
 
 const filterScores = (scores) => {
@@ -27,9 +25,9 @@ const Golfer = (props) => {
         <TableCell align="left" component="th" scope="row">
           {name}
         </TableCell>
-        {filteredScores.map(score => (
-          // eslint-disable-next-line no-plusplus
-          <TableCell key={id++} align="center">
+        {filteredScores.map((score, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <TableCell key={index} align="center">
             {score}
           </TableCell>
         ))}
