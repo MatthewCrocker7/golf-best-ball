@@ -44,7 +44,7 @@ class Game extends React.Component {
       console.log(response);
       this.setState({ currentRound: response });
     } catch (error) {
-      console.log('Get current round error');
+      console.log('Get current round error: ', error);
       throw error;
     }
   }

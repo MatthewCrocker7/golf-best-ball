@@ -6,8 +6,6 @@ import TableRow from '@material-ui/core/TableRow';
 
 const _ = require('lodash');
 
-const parseData = scores => scores.map(x => (x === '-' ? 999 : x));
-
 const filterScores = (scores) => {
   const result = scores.filter(x => x !== 0);
 
@@ -17,20 +15,72 @@ const filterScores = (scores) => {
   return result;
 };
 
+const checkNaN = x => (typeof x === 'string' || !x);
+
+const min = (a, b, c, d) => {
+  if (checkNaN(a) && checkNaN(b) && checkNaN(c) && checkNaN(d)) {
+    return '-';
+  }
+  if (!checkNaN(a) && checkNaN(b) && checkNaN(c) && checkNaN(d)) {
+    return a;
+  }
+  if (!checkNaN(a) && !checkNaN(b) && checkNaN(c) && checkNaN(d)) {
+    return Math.min(a, b);
+  }
+  if (!checkNaN(a) && checkNaN(b) && !checkNaN(c) && checkNaN(d)) {
+    return Math.min(a, c);
+  }
+  if (!checkNaN(a) && checkNaN(b) && checkNaN(c) && !checkNaN(d)) {
+    return Math.min(a, d);
+  }
+  if (!checkNaN(a) && !checkNaN(b) && !checkNaN(c) && checkNaN(d)) {
+    return Math.min(a, b, c);
+  }
+  if (!checkNaN(a) && !checkNaN(b) && checkNaN(c) && !checkNaN(d)) {
+    return Math.min(a, b, d);
+  }
+  if (!checkNaN(a) && checkNaN(b) && !checkNaN(c) && !checkNaN(d)) {
+    return Math.min(a, c, d);
+  }
+  if (checkNaN(a) && !checkNaN(b) && checkNaN(c) && checkNaN(d)) {
+    return b;
+  }
+  if (checkNaN(a) && !checkNaN(b) && !checkNaN(c) && checkNaN(d)) {
+    return Math.min(b, c);
+  }
+  if (checkNaN(a) && !checkNaN(b) && checkNaN(c) && !checkNaN(d)) {
+    return Math.min(b, d);
+  }
+  if (checkNaN(a) && !checkNaN(b) && !checkNaN(c) && !checkNaN(d)) {
+    return Math.min(b, c, d);
+  }
+  if (checkNaN(a) && checkNaN(b) && !checkNaN(c) && checkNaN(d)) {
+    return c;
+  }
+  if (checkNaN(a) && checkNaN(b) && !checkNaN(c) && !checkNaN(d)) {
+    return Math.min(c, d);
+  }
+  if (checkNaN(a) && checkNaN(b) && checkNaN(c) && !checkNaN(d)) {
+    return d;
+  }
+
+  return Math.min(a, b, c, d);
+};
+
+const sum = (holes) => {
+  const result = holes.reduce((total, num) => total + (typeof num === 'string' ? 0 : num));
+
+  if (typeof result === 'string') {
+    return 0;
+  }
+  return result;
+};
+
 const getBest = (golfData) => {
   const data = golfData.map(x => filterScores(x.scores));
 
-  const g1 = parseData(data[0]);
-  const g2 = parseData(data[1]);
-  const g3 = parseData(data[2]);
-  const g4 = parseData(data[3]);
-
-  return _.zipWith(g1, g2, g3, g4, (a, b, c, d) => Math.min(a, b, c, d));
+  return _.zipWith(...data, (a, b, c, d) => min(a, b, c, d));
 };
-
-const sum = holes => holes.reduce((total, num) => total + num);
-
-let id = 1;
 
 const BestBall = (props) => {
   const { data } = props;
@@ -42,8 +92,9 @@ const BestBall = (props) => {
         <TableCell align="left" component="th" scope="row">
           Best
         </TableCell>
-        {scores.map(hole => (
-          <TableCell key={id++} align="center">
+        {scores.map((hole, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <TableCell key={index} align="center">
             {hole}
           </TableCell>
         ))}
