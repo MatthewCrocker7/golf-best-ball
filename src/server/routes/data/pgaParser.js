@@ -157,11 +157,14 @@ const saveNewGame = async (players) => {
 };
 
 const getCurrentRoundScores = async (gameId) => {
+  /*
   let round = getCurrentRound();
   if (round < 0) {
     // If it's later than Sunday but before Thursday, get round 4
     round = 4;
   }
+  */
+  const round = 2;
 
   try {
     const query = 'SELECT * FROM public.game_info JOIN public.game_info_player ON'
