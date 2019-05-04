@@ -5,8 +5,7 @@ const { Pool } = require('pg');
 // PGA CHAMPION (MAY-16) = b850e0a9-c15d-4263-8122-03df781e2b8d
 
 const pool = new Pool({
-  // connectionString: process.env.DATABASE_URL,
-  connectionString: 'postgres://nnfcgfupqqzyqy:16e57caabe139f9e4a29751db809547b14f5ec7816b1a1a4de114422d865eeb8@ec2-50-17-246-114.compute-1.amazonaws.com:5432/dakcm83ia2qk75',
+  connectionString: process.env.DATABASE_URL,
   ssl: true
 });
 
