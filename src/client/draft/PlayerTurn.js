@@ -14,17 +14,20 @@ const styles = () => ({
 
 const sum = (acc, cur) => acc + cur;
 
-const saveNewGame = async () => {
+const saveNewGame = async (players) => {
   try {
-    let response = await fetch('/api/pga/newGame', {
+    let response = await fetch('/api/pga/newGame/', {
       method: 'POST',
+      body: JSON.stringify({
+        players
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
     });
     if (response.ok) {
       response = await response.json();
-      console.log(response);
+      // console.log(response);
     }
     // console.log(response);
   } catch (error) {
@@ -38,7 +41,7 @@ const checkDraftCompletion = (players) => {
   const count = players.map(x => x.golfers.length).reduce(sum);
 
   if (count === checkSum) {
-    saveNewGame();
+    saveNewGame(players);
     return true;
   }
   return false;

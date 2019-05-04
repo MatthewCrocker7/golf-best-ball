@@ -7,7 +7,6 @@ import Paper from '@material-ui/core/Paper';
 import GameHeader from './gameComponents/GameHeader';
 import Golfer from './gameComponents/Golfer';
 import BestBall from './gameComponents/BestBall';
-import seed from './gameComponents/seed';
 
 const styles = () => ({
   root: {
@@ -21,35 +20,26 @@ const styles = () => ({
 });
 
 const PlayerScoreCard = (props) => {
-  const { classes, name } = props;
+  const { classes, info } = props;
   return (
     <Paper className={classes.root}>
-      <Typography color="secondary" className={classes.textStyle} variant="h5">{name}</Typography>
+      <Typography color="secondary" className={classes.textStyle} variant="h5">{info[0].player_name}</Typography>
       <Table padding="dense">
         <GameHeader />
-        {seed.golferData.map(golfer => (
-          <Golfer key={golfer.name} name={golfer.name} scores={golfer.scores} />
-        ))}
-        <BestBall data={seed.golferData} />
+        {
+          info.map(x => (
+            <Golfer key={x.golfer_id} name={x.golfer_name} scores={x.scores} />
+          ))
+        }
+        <BestBall data={info} />
       </Table>
     </Paper>
   );
 };
 
-/*
-<Typography color="secondary" className={classes.textStyle} variant="h5">{name}</Typography>
-      <Table padding="dense">
-        <GameHeader />
-        {seed.golferData.map(golfer => (
-          <Golfer key={golfer.name} name={golfer.name} scores={golfer.scores} />
-        ))}
-        <BestBall data={seed.golferData} />
-      </Table>
-*/
-
 PlayerScoreCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired,
+  info: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(PlayerScoreCard);

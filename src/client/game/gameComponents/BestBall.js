@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TableFooter from '@material-ui/core/TableFooter';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -9,8 +8,17 @@ const _ = require('lodash');
 
 const parseData = scores => scores.map(x => (x === '-' ? 999 : x));
 
+const filterScores = (scores) => {
+  const result = scores.filter(x => x !== 0);
+
+  while (result.length < 18) {
+    result.push('-');
+  }
+  return result;
+};
+
 const getBest = (golfData) => {
-  const data = golfData.map(x => x.scores);
+  const data = golfData.map(x => filterScores(x.scores));
 
   const g1 = parseData(data[0]);
   const g2 = parseData(data[1]);
@@ -25,7 +33,7 @@ const sum = holes => holes.reduce((total, num) => total + num);
 let id = 1;
 
 const BestBall = (props) => {
-  const { classes, data } = props;
+  const { data } = props;
   const scores = getBest(data);
 
   return (
@@ -48,7 +56,6 @@ const BestBall = (props) => {
 };
 
 BestBall.propTypes = {
-  // classes: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired
 };
 

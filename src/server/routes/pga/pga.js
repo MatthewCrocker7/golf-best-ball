@@ -14,30 +14,22 @@ Must track tournament schedule - before a tourney give option to draft for new g
 Draft period should be between World Rankings update and tournament start
 Must update world golf ranks every Monday
 Must keep track of players, and their golfers
+*/
 
-1. Draft Complete
-2. Saves new GAME_ID + players
-
-3 Tables
-1st
-GAME_ID (server generated) | TOURNAMENT_ID | TOURNAMENT_NAME | PLAYER1 | PLAYER2| PLAYER3 | PLAYER4 Player should eventually be based on generated ID on account creation
-
-2nd
-PLAYER_ID | GAME_ID | GOLFER1 | GOLFER2 | GOLFER3 | GOLFER4 | SCORES
-
-3rd
-GOLFER | TOURNAMENT_ID | ROUND1_SCORES | ROUND2_SCORES | ROUND3_SCORES | ROUND4_SCORES
+/*
+setInterval(async () => {
+  pgaParser.updateScores();
+}, 60000);
 */
 
 router.get('/getWorldRankings', async (req, res) => {
   const rankings = await pgaParser.getWorldRankings();
-  // console.log(rankings);
 
   res.send(rankings);
 });
 
 router.get('/getTournament', async (req, res) => {
-  const tournament = pgaParser.getTournament();
+  const tournament = pgaParser.getNextTournament();
   // console.log(tournament.name);
   if (tournament) {
     res.send({ tournament });
@@ -46,9 +38,16 @@ router.get('/getTournament', async (req, res) => {
   }
 });
 
-router.post('/newGame', async (req, res) => {
-  const response = await pgaParser.saveNewGame(req);
-  res.send({ test: 'hi' });
+router.post('/newGame/', async (req, res) => {
+  pgaParser.saveNewGame(req.body.players);
+  // console.log(response);
+  res.sendStatus(200); // Should later check if request denied
+});
+
+router.get('/getCurrentRound/:gameId', async (req, res) => {
+  const response = await pgaParser.getCurrentRoundScores(req.params.gameId);
+
+  res.send(response);
 });
 
 module.exports = router;

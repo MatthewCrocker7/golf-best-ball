@@ -16,24 +16,71 @@ const mapStateToProps = state => ({
   players: state.players,
 });
 
-const Game = (props) => {
-  const { classes, players } = props;
-  return (
-    <div className={classes.root}>
-      {players.map(player => (
-        <PlayerScoreCard key={player.name} name={player.name} golfers={player.golfers} />
-      ))}
-      <PlayerScoreCard name="Matthew" />
-      <PlayerScoreCard name="Drew" />
-      <PlayerScoreCard name="Jonathan" />
-      <PlayerScoreCard name="Dentyn" />
-    </div>
-  );
+/*
+const getCurrentRound = async () => {
+  const gameId = '21111111-1111-1111-1111-111111111111';
+  try {
+    let response = await fetch(`/api/pga/getCurrentRound/${gameId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    response = await response.json();
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log('Get current round error');
+    throw error;
+  }
 };
+*/
+
+class Game extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentRound: []
+    };
+
+    this.getCurrentRound();
+  }
+
+  getCurrentRound = async () => {
+    const gameId = '21111111-1111-1111-1111-111111111111';
+    try {
+      let response = await fetch(`/api/pga/getCurrentRound/${gameId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      response = await response.json();
+      console.log(response);
+      this.setState({ currentRound: response });
+    } catch (error) {
+      console.log('Get current round error');
+      throw error;
+    }
+  }
+
+  render() {
+    const { classes } = this.props;
+    const { currentRound } = this.state;
+
+    return (
+      <div className={classes.root}>
+        {currentRound.map(player => (
+          <PlayerScoreCard info={player} key={player[0].player_id} />
+        ))}
+      </div>
+    );
+  }
+}
 
 Game.propTypes = {
-  classes: PropTypes.object.isRequired,
-  players: PropTypes.array.isRequired
+  classes: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps)(withStyles(styles)(Game));
