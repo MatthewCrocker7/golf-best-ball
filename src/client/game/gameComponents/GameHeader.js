@@ -1,28 +1,22 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import seed from './seed';
-
-const styles = () => ({
-  root: {
-
-  },
-});
 
 const sum = holes => holes.map(x => x.par).reduce((total, num) => total + num);
 
-const GameHeader = () => {
+const GameHeader = (props) => {
+  const { holes } = props;
   return (
     <TableBody>
       <TableRow>
         <TableCell align="left" component="th" scope="row">
           Hole
         </TableCell>
-        {seed.holeData.map(hole => (
-          <TableCell key={hole.hole} align="center">
-            {hole.hole}
+        {holes.map(hole => (
+          <TableCell key={hole.number} align="center">
+            {hole.number}
           </TableCell>
         ))}
         <TableCell align="center">
@@ -34,13 +28,13 @@ const GameHeader = () => {
         <TableCell align="left" component="th" scope="row">
           Par
         </TableCell>
-        {seed.holeData.map(hole => (
-          <TableCell key={hole.hole} align="center">
+        {holes.map(hole => (
+          <TableCell key={hole.number} align="center">
             {hole.par}
           </TableCell>
         ))}
         <TableCell align="center">
-          {sum(seed.holeData)}
+          {sum(holes)}
         </TableCell>
         <TableCell align="center">
           To Par
@@ -48,6 +42,10 @@ const GameHeader = () => {
       </TableRow>
     </TableBody>
   );
+};
+
+GameHeader.propTypes = {
+  holes: PropTypes.array.isRequired
 };
 
 export default GameHeader;

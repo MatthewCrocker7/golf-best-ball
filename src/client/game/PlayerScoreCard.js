@@ -25,7 +25,7 @@ const PlayerScoreCard = (props) => {
     <Paper className={classes.root}>
       <Typography color="secondary" className={classes.textStyle} variant="h5">{info[0].player_name}</Typography>
       <Table padding="dense">
-        <GameHeader />
+        <GameHeader holes={info[0].holes} />
         {
           info.map(x => (
             <Golfer key={x.golfer_id} name={x.golfer_name} scores={x.scores} />

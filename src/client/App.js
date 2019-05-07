@@ -4,8 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Header from './components/Header';
 import NavBar from './components/NavBar';
-import Game from './game/Game';
 import Draft from './draft/Draft';
+import Game from './game/Game';
+import Summary from './summary/Summary';
 
 const styles = () => ({
   root: {
@@ -29,6 +30,7 @@ const App = (props) => {
       <NavBar />
       {nav === 0 && <Draft />}
       {nav === 1 && <Game />}
+      {nav === 2 && <Summary />}
     </div>
   );
 };
