@@ -48,4 +48,10 @@ router.get('/getCurrentRound/:gameId', async (req, res) => {
   res.send(response);
 });
 
+router.get('/getAllRounds/:gameId', async (req, res) => {
+  const response = await pgaParser.getTotalRoundScores(req.params.gameId);
+
+  res.send(response);
+});
+
 module.exports = router;

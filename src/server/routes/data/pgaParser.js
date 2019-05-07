@@ -1,10 +1,11 @@
 const rp = require('request-promise');
 const NodeCache = require('node-cache');
+const _ = require('lodash');
 const db = require('../../db');
 const schedule = require('./pgaSchedule');
 
 const cache = new NodeCache();
-const KEY = 'djuje9atsqnkcfp5egh2zsum';
+const KEY = process.env.API_KEY;
 
 const getNextTournament = () => {
   const startDate = new Date().toISOString().split('T')[0];
@@ -15,9 +16,12 @@ const getNextTournament = () => {
 
 const getCurrentTournament = () => {
   const cur = new Date().toISOString().split('T')[0];
-  const result = schedule.tournaments.filter(x => (x.start_date <= cur && x.end_date >= cur));
+  const end = new Date();
+  end.setDate(end.getDate() + ((4 + 7 - end.getDay()) % 7));
 
-  return result[0];
+  const result = schedule.tournaments.filter(x => (x.start_date <= cur && x.end_date <= end.toISOString().split('T')[0]));
+
+  return result[result.length - 1];
 };
 
 const getCurrentRound = () => {
@@ -67,6 +71,7 @@ const updateScores = async () => {
     // Doesn't update scores on Monday, Tuesday, Wednesday
     return;
   }
+
   const tournament = getCurrentTournament();
   console.log('The current tournament is: ', tournament.name);
   console.log('The current tournament is: ', tournament.id);
@@ -100,10 +105,10 @@ const getWorldRankings = async () => {
     ));
     cache.set('worldRankings', result);
 
-    console.log('Key used');
+    console.log('Key used for world rankings');
     return result;
   }
-  console.log('Key not used');
+  console.log('Cache used for world rankings');
   return players;
 };
 
@@ -162,6 +167,8 @@ const getCurrentRoundScores = async (gameId) => {
     // If it's later than Sunday but before Thursday, get round 4
     round = 4;
   }
+  const tournament = getCurrentTournament();
+  const { holes } = tournament.venue.courses[0];
 
   try {
     const query = 'SELECT * FROM public.game_info JOIN public.game_info_player ON'
@@ -176,10 +183,99 @@ const getCurrentRoundScores = async (gameId) => {
     const result = [];
     players.forEach((player) => {
       const golfers = response.rows.filter(x => x.player_name === player);
+      golfers[0].holes = holes;
       result.push(golfers);
     });
 
     return result;
+  } catch (error) {
+    console.log('Get current round error: ', error);
+    throw error;
+  }
+};
+
+const min = (a, b, c, d) => {
+  if (!a) {
+    return 0;
+  }
+  if (!b) {
+    return a;
+  }
+  if (!c) {
+    return Math.min(a, b);
+  }
+  if (!d) {
+    return Math.min(a, b, c);
+  }
+  return Math.min(a, b, c, d);
+};
+
+const toPar = (round, tournament, number) => {
+  const scores = round.map(x => x.scores);
+  const best = _.zipWith(...scores, (a, b, c, d) => min(a, b, c, d));
+  const { holes } = tournament.venue.courses[0];
+  const reducer = (total, num, i) => (num === 0 ? total : total + (num - holes[i].par));
+  const par = best.reduce(reducer, 0);
+
+  return {
+    toPar: par,
+    round: number
+  };
+};
+
+const sortRounds = (a, b) => {
+  if (a.round < b.round) {
+    return -1;
+  }
+  if (a.round > b.round) {
+    return 1;
+  }
+  return 0;
+};
+
+const summarizeAllRounds = (data) => {
+  const tournament = getCurrentTournament();
+  // const { holes } = tournament.venue.courses[0];
+  const result = data.map((player) => {
+    const rounds = player.map(round => toPar(round, tournament, round[0].round));
+    rounds.sort(sortRounds);
+    const reducer = (total, x) => total + x.toPar;
+    return ({
+      player: player[0][0].player_name,
+      player_id: player[0][0].player_id,
+      rounds,
+      total: rounds.reduce(reducer, 0)
+    });
+  });
+
+
+  return result;
+};
+
+const getTotalRoundScores = async (gameId) => {
+  try {
+    const query = 'SELECT * FROM public.game_info JOIN public.game_info_player ON'
+      + ' (public.game_info_player.game_id = public.game_info.game_id) JOIN public.golfer_scores'
+      + ' ON (public.golfer_scores.tournament_id = public.game_info.tournament_id AND public.golfer_scores.golfer_id ='
+      + ' public.game_info_player.golfer_id)'
+      + ' WHERE public.game_info.game_id = $1';
+    const params = [gameId];
+    const response = await db.query(query, params);
+
+    const players = [...new Set(response.rows.map(x => x.player_name))];
+    const result = [];
+    players.forEach((player) => {
+      const golfers = response.rows.filter(x => x.player_name === player);
+      const uniqueRounds = [...new Set(golfers.map(x => x.round))];
+      const rounds = [];
+      uniqueRounds.forEach((round) => {
+        const temp = golfers.filter(y => y.round === round);
+        rounds.push(temp);
+      });
+      result.push(rounds);
+    });
+
+    return summarizeAllRounds(result);
   } catch (error) {
     console.log('Get current round error: ', error);
     throw error;
@@ -191,5 +287,6 @@ module.exports = {
   updateScores,
   getWorldRankings,
   saveNewGame,
-  getCurrentRoundScores
+  getCurrentRoundScores,
+  getTotalRoundScores
 };
