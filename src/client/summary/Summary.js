@@ -59,9 +59,11 @@ class Summary extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Typography className={classes.textStyle} color="secondary" variant="h4">
-          data goes here
-        </Typography>
+        {allRounds.length > 0 && (
+          <Typography className={classes.textStyle} color="secondary" variant="h4">
+            {allRounds[0].tournament}
+          </Typography>
+        )}
         <SummaryCard allRounds={allRounds} />
       </div>
     );
