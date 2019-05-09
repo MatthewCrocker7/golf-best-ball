@@ -3,8 +3,31 @@ import {
   UPDATE_SELECTED,
   UPDATE_DRAFT,
   DRAFT_GOLFER,
-  SET_DRAFT_BOARD
+  SET_DRAFT_BOARD,
+  UPDATE_ROUND
 } from '../constants/action-types';
+
+const getInitRound = () => {
+  const day = new Date().getDay();
+  let round;
+  switch (day) {
+    case 0:
+      round = 4;
+      break;
+    case 4:
+      round = 1;
+      break;
+    case 5:
+      round = 2;
+      break;
+    case 6:
+      round = 3;
+      break;
+    default:
+      round = 4;
+  }
+  return round;
+};
 
 const initState = {
   nav: 0,
@@ -23,7 +46,8 @@ const initState = {
     index: 0,
     snakeUp: true
   },
-  draftBoard: []
+  draftBoard: [],
+  round: getInitRound()
 };
 
 const rootReducer = (state = initState, action) => {
@@ -92,6 +116,12 @@ const rootReducer = (state = initState, action) => {
     return {
       ...state,
       draftBoard: action.payload.value
+    };
+  }
+  if (action.type === UPDATE_ROUND) {
+    return {
+      ...state,
+      round: action.payload
     };
   }
 

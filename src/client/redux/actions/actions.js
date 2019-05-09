@@ -3,7 +3,8 @@ import {
   UPDATE_SELECTED,
   UPDATE_DRAFT,
   DRAFT_GOLFER,
-  SET_DRAFT_BOARD
+  SET_DRAFT_BOARD,
+  UPDATE_ROUND
 } from '../constants/action-types';
 
 const updateNav = value => ({
@@ -31,10 +32,16 @@ const setDraftBoard = value => ({
   payload: value
 });
 
+const updateRound = value => ({
+  type: UPDATE_ROUND,
+  payload: value
+});
+
 export default {
   updateNav,
   updateSelected,
   updateDraft,
   draftGolfer,
-  setDraftBoard
+  setDraftBoard,
+  updateRound
 };

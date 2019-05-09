@@ -161,16 +161,18 @@ const saveNewGame = async (players) => {
   }
 };
 
-const getCurrentRoundScores = async (gameId) => {
-  let round = getCurrentRound();
-  if (round < 0) {
-    // If it's later than Sunday but before Thursday, get round 4
-    round = 4;
-  }
-  const tournament = getCurrentTournament();
-  const { holes } = tournament.venue.courses[0];
-
+const getCurrentRoundScores = async (request) => {
   try {
+    const { gameId, round } = request;
+    const currentRound = cache.get(`${gameId}-${round}`);
+    if (currentRound !== undefined) {
+      console.log('Cache used for current round');
+      return currentRound;
+    }
+
+    const tournament = getCurrentTournament();
+    const { holes } = tournament.venue.courses[0];
+
     const query = 'SELECT * FROM public.game_info JOIN public.game_info_player ON'
     + ' (public.game_info_player.game_id = public.game_info.game_id) JOIN public.golfer_scores'
     + ' ON (public.golfer_scores.tournament_id = public.game_info.tournament_id AND public.golfer_scores.golfer_id ='
@@ -186,7 +188,7 @@ const getCurrentRoundScores = async (gameId) => {
       golfers[0].holes = holes;
       result.push(golfers);
     });
-
+    cache.set(`${gameId}-${round}`, result);
     return result;
   } catch (error) {
     console.log('Get current round error: ', error);
@@ -244,7 +246,8 @@ const summarizeAllRounds = (data) => {
       player: player[0][0].player_name,
       player_id: player[0][0].player_id,
       rounds,
-      total: rounds.reduce(reducer, 0)
+      total: rounds.reduce(reducer, 0),
+      tournament: tournament.name
     });
   });
 
