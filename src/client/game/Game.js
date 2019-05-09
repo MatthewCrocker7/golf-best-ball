@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import RoundSelector from './gameComponents/RoundSelector';
 import PlayerScoreCard from './PlayerScoreCard';
 
 const styles = () => ({
@@ -19,6 +19,7 @@ const styles = () => ({
 
 const mapStateToProps = state => ({
   players: state.players,
+  round: state.round
 });
 
 class Game extends React.Component {
@@ -28,18 +29,25 @@ class Game extends React.Component {
     this.state = {
       currentRound: []
     };
-
-    // this.getCurrentRound();
   }
 
   componentDidMount() {
     this.getCurrentRound();
   }
 
+  componentDidUpdate(prevProps) {
+    const { round } = this.props;
+    if (round !== prevProps.round) {
+      this.getCurrentRound();
+    }
+  }
+
   getCurrentRound = async () => {
+    const { round } = this.props;
+    // const round = 4;
     const gameId = '21111111-1111-1111-1111-111111111111';
     try {
-      let response = await fetch(`/api/pga/getCurrentRound/${gameId}`, {
+      let response = await fetch(`/api/pga/getCurrentRound/${gameId}/${round}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -60,11 +68,7 @@ class Game extends React.Component {
 
     return (
       <div className={classes.root}>
-        {currentRound.length > 0 && (
-          <Typography className={classes.textStyle} color="secondary" variant="h4">
-            {`${currentRound[0][0].tournament_name} - Round ${currentRound[0][0].round}`}
-          </Typography>
-        )}
+        <RoundSelector currentRound={currentRound} />
         {currentRound.map(player => (
           <PlayerScoreCard info={player} key={player[0].player_id} />
         ))}
@@ -74,7 +78,8 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  round: PropTypes.number.isRequired
 };
 
 export default connect(mapStateToProps)(withStyles(styles)(Game));
