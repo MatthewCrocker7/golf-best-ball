@@ -31,7 +31,7 @@ const PlayerScoreCard = (props) => {
             <Golfer key={x.golfer_id} name={x.golfer_name} scores={x.scores} />
           ))
         }
-        <BestBall data={info} />
+        <BestBall holes={info[0].holes} data={info} />
       </Table>
     </Paper>
   );

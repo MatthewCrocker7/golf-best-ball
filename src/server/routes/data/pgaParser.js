@@ -172,6 +172,7 @@ const getCurrentRoundScores = async (request) => {
 
     const tournament = getCurrentTournament();
     const { holes } = tournament.venue.courses[0];
+    console.log(tournament.name);
 
     const query = 'SELECT * FROM public.game_info JOIN public.game_info_player ON'
     + ' (public.game_info_player.game_id = public.game_info.game_id) JOIN public.golfer_scores'

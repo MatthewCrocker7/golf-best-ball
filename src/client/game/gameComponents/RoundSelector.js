@@ -69,6 +69,7 @@ class RoundSelector extends React.Component {
       <div className={classes.root}>
         <Button
           className={classes.buttonStyle}
+          variant="outlined"
           color="secondary"
           buttonRef={(node) => {
             this.anchorEl = node;
