@@ -24,6 +24,11 @@ const getCurrentTournament = () => {
   return result[result.length - 1];
 };
 
+const getTournamentById = (id) => {
+  const result = schedule.tournaments.filter(x => x.id === id);
+  return result[0];
+};
+
 const getCurrentRound = () => {
   const day = new Date().getDay();
   let round;
@@ -170,10 +175,6 @@ const getCurrentRoundScores = async (request) => {
       return currentRound;
     }
 
-    const tournament = getCurrentTournament();
-    const { holes } = tournament.venue.courses[0];
-    console.log(tournament.name);
-
     const query = 'SELECT * FROM public.game_info JOIN public.game_info_player ON'
     + ' (public.game_info_player.game_id = public.game_info.game_id) JOIN public.golfer_scores'
     + ' ON (public.golfer_scores.tournament_id = public.game_info.tournament_id AND public.golfer_scores.golfer_id ='
@@ -181,6 +182,10 @@ const getCurrentRoundScores = async (request) => {
     + ' WHERE public.game_info.game_id = $1 and public.golfer_scores.round = $2';
     const params = [gameId, round];
     const response = await db.query(query, params);
+
+    const tournament = getTournamentById(response.rows[0].tournament_id);
+    const { holes } = tournament.venue.courses[0];
+    console.log(tournament.name);
 
     const players = [...new Set(response.rows.map(x => x.player_name))];
     const result = [];
