@@ -13,6 +13,41 @@ const styles = () => ({
     width: '100%',
     border: '3px solid #FFFFFF',
   },
+  par: {
+    padding: '1px',
+    height: '100%',
+    width: '100%',
+    border: '3px solid #ffffff',
+    borderRadius: '50%',
+  },
+  birdie: {
+    padding: '1px',
+    height: '100%',
+    width: '100%',
+    border: '3px solid #add8e6',
+    borderRadius: '50%',
+  },
+  eagle: {
+    padding: '1px',
+    height: '100%',
+    width: '100%',
+    border: '3px solid #add8e6',
+    borderRadius: '50%',
+    backgroundColor: '#add8e6'
+  },
+  bogie: {
+    padding: '1px',
+    height: '100%',
+    width: '100%',
+    border: '3px solid #F99245',
+  },
+  doubleBogie: {
+    padding: '1px',
+    height: '100%',
+    width: '100%',
+    border: '3px solid #F99245',
+    backgroundColor: '#F99245'
+  },
 });
 
 const sum = holes => holes.reduce((total, num) => total + num);
@@ -26,9 +61,54 @@ const filterScores = (scores) => {
   return result;
 };
 
+const toPar = (scores, holes) => scores.map((x, index) => x - holes[index].par);
+
+const GolfSymbol = (props) => {
+  const { style, par, score } = props;
+  if (par <= -2) {
+    return (
+      <div className={style.eagle}>
+        <Typography>{score}</Typography>
+      </div>
+    );
+  }
+  if (par === -1) {
+    return (
+      <div className={style.birdie}>
+        <Typography>{score}</Typography>
+      </div>
+    );
+  }
+  if (par === 0) {
+    return (
+      <div className={style.par}>
+        <Typography>{score}</Typography>
+      </div>
+    );
+  }
+  if (par === 1) {
+    return (
+      <div className={style.bogie}>
+        <Typography>{score}</Typography>
+      </div>
+    );
+  }
+  return (
+    <div className={style.doubleBogie}>
+      <Typography>{score}</Typography>
+    </div>
+  );
+};
+
 const Golfer = (props) => {
-  const { classes, name, scores } = props;
+  const {
+    classes,
+    holes,
+    name,
+    scores
+  } = props;
   const filteredScores = filterScores(scores);
+  const symbols = toPar(filteredScores, holes);
 
   return (
     <TableBody>
@@ -36,12 +116,10 @@ const Golfer = (props) => {
         <TableCell align="left" component="th" scope="row">
           {name}
         </TableCell>
-        {filteredScores.map((score, index) => (
+        {filteredScores.map((score, i) => (
           // eslint-disable-next-line react/no-array-index-key
-          <TableCell key={index} align="center">
-            <div className={classes.divStyle}>
-              <Typography>{score}</Typography>
-            </div>
+          <TableCell key={i} align="center">
+            <GolfSymbol score={score} par={symbols[i]} style={classes} />
           </TableCell>
         ))}
         <TableCell align="center">
@@ -54,8 +132,15 @@ const Golfer = (props) => {
 
 Golfer.propTypes = {
   classes: PropTypes.object.isRequired,
+  holes: PropTypes.array.isRequired,
   name: PropTypes.string.isRequired,
   scores: PropTypes.array.isRequired
+};
+
+GolfSymbol.propTypes = {
+  style: PropTypes.object.isRequired,
+  score: PropTypes.number.isRequired,
+  par: PropTypes.number.isRequired
 };
 
 export default withStyles(styles)(Golfer);

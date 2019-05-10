@@ -9,6 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 const _ = require('lodash');
 
 const styles = () => ({
+  textStyle: {
+    fontWeight: 'bold',
+  },
   par: {
     padding: '1px',
     height: '100%',
@@ -129,34 +132,34 @@ const GolfSymbol = (props) => {
   if (par <= -2) {
     return (
       <div className={style.eagle}>
-        <Typography>{score}</Typography>
+        <Typography className={style.textStyle}>{score}</Typography>
       </div>
     );
   }
   if (par === -1) {
     return (
       <div className={style.birdie}>
-        <Typography>{score}</Typography>
+        <Typography className={style.textStyle}>{score}</Typography>
       </div>
     );
   }
   if (par === 0) {
     return (
       <div className={style.par}>
-        <Typography>{score}</Typography>
+        <Typography className={style.textStyle}>{score}</Typography>
       </div>
     );
   }
   if (par === 1) {
     return (
       <div className={style.bogie}>
-        <Typography>{score}</Typography>
+        <Typography className={style.textStyle}>{score}</Typography>
       </div>
     );
   }
   return (
     <div className={style.doubleBogie}>
-      <Typography>{score}</Typography>
+      <Typography className={style.textStyle}>{score}</Typography>
     </div>
   );
 };
@@ -170,7 +173,7 @@ const BestBall = (props) => {
     <TableBody>
       <TableRow>
         <TableCell align="left" component="th" scope="row">
-          Best
+          <Typography className={classes.textStyle}>Best</Typography>
         </TableCell>
         {scores.map((score, i) => (
           // eslint-disable-next-line react/no-array-index-key
@@ -179,7 +182,7 @@ const BestBall = (props) => {
           </TableCell>
         ))}
         <TableCell align="center">
-          {sum(scores)}
+          <Typography className={classes.textStyle}>{sum(scores)}</Typography>
         </TableCell>
       </TableRow>
     </TableBody>
