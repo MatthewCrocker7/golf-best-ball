@@ -12,7 +12,7 @@ import MenuList from '@material-ui/core/MenuList';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions/actions';
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     width: 'auto',
     display: 'flex',
