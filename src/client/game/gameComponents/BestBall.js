@@ -165,7 +165,6 @@ const BestBall = (props) => {
   const { classes, data, holes } = props;
   const scores = getBest(data);
   const symbols = toPar(scores, holes);
-  console.log(symbols);
 
   return (
     <TableBody>
