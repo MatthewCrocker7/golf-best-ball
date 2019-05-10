@@ -23,7 +23,7 @@ const styles = theme => ({
     marginTop: '0.5%',
     width: '15%',
     margin: 'auto',
-    fontWeight: theme.typography.fontWeightRegular * 2,
+    fontWeight: 'bold'
   },
   textStyle: {
     margin: 'auto',

@@ -28,7 +28,12 @@ const PlayerScoreCard = (props) => {
         <GameHeader holes={info[0].holes} />
         {
           info.map(x => (
-            <Golfer key={x.golfer_id} name={x.golfer_name} scores={x.scores} />
+            <Golfer
+              key={x.golfer_id}
+              name={x.golfer_name}
+              scores={x.scores}
+              holes={info[0].holes}
+            />
           ))
         }
         <BestBall holes={info[0].holes} data={info} />
