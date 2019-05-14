@@ -108,7 +108,7 @@ const getWorldRankings = async () => {
         id: x.id
       }
     ));
-    cache.set('worldRankings', result);
+    cache.set('worldRankings', result, 604800);
 
     console.log('Key used for world rankings');
     return result;
