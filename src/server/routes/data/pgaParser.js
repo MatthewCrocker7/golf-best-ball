@@ -241,8 +241,8 @@ const sortRounds = (a, b) => {
   return 0;
 };
 
-const summarizeAllRounds = (data) => {
-  const tournament = getCurrentTournament();
+const summarizeAllRounds = (data, tournament) => {
+  // const tournament = getCurrentTournament();
   // const { holes } = tournament.venue.courses[0];
   const result = data.map((player) => {
     const rounds = player.map(round => toPar(round, tournament, round[0].round));
@@ -270,6 +270,7 @@ const getTotalRoundScores = async (gameId) => {
       + ' WHERE public.game_info.game_id = $1';
     const params = [gameId];
     const response = await db.query(query, params);
+    const tournament = getTournamentById(response.rows[0].tournament_id);
 
     const players = [...new Set(response.rows.map(x => x.player_name))];
     const result = [];
@@ -284,7 +285,7 @@ const getTotalRoundScores = async (gameId) => {
       result.push(rounds);
     });
 
-    return summarizeAllRounds(result);
+    return summarizeAllRounds(result, tournament);
   } catch (error) {
     console.log('Get current round error: ', error);
     throw error;
