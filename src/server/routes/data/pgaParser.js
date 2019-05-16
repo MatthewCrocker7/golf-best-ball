@@ -204,14 +204,13 @@ const getCurrentRoundScores = async (request) => {
   try {
     const { gameId, round } = request;
     const gameKey = `${gameId}-${round}`;
-    /*
+
     const currentRound = cache.get(gameKey);
 
     if (currentRound !== undefined) {
       console.log('Cache used for current round');
       return currentRound;
     }
-    */
 
     const query = 'SELECT * FROM public.game_info JOIN public.game_info_player ON'
     + ' (public.game_info_player.game_id = public.game_info.game_id) JOIN public.golfer_scores'
@@ -231,11 +230,16 @@ const getCurrentRoundScores = async (request) => {
     const players = [...new Set(response.rows.map(x => x.player_name))];
     const result = [];
     players.forEach((player) => {
-      const golfers = response.rows.filter(x => x.player_name === player);
-      golfers[0].holes = holes;
+      let golfers = response.rows.filter(x => x.player_name === player);
+      golfers = golfers.map((x) => {
+        // eslint-disable-next-line no-param-reassign
+        x.holes = holes;
+        return x;
+      });
+      // golfers[0].holes = holes;
       result.push(golfers);
     });
-    // cache.set(`${gameId}-${round}`, result, 300); // Figure out way to del cache on score update
+    cache.set(`${gameId}-${round}`, result, 300); // Figure out way to del cache on score update
 
     updateCurrentGames(gameKey);
 
@@ -244,6 +248,58 @@ const getCurrentRoundScores = async (request) => {
     console.log('Get current round error: ', error);
     throw error;
   }
+};
+
+const checkNaN = x => (x === 0 || !x);
+
+const minTest = (a, b, c, d) => {
+  if (checkNaN(a) && checkNaN(b) && checkNaN(c) && checkNaN(d)) {
+    return 0;
+  }
+  if (!checkNaN(a) && checkNaN(b) && checkNaN(c) && checkNaN(d)) {
+    return a;
+  }
+  if (!checkNaN(a) && !checkNaN(b) && checkNaN(c) && checkNaN(d)) {
+    return Math.min(a, b);
+  }
+  if (!checkNaN(a) && checkNaN(b) && !checkNaN(c) && checkNaN(d)) {
+    return Math.min(a, c);
+  }
+  if (!checkNaN(a) && checkNaN(b) && checkNaN(c) && !checkNaN(d)) {
+    return Math.min(a, d);
+  }
+  if (!checkNaN(a) && !checkNaN(b) && !checkNaN(c) && checkNaN(d)) {
+    return Math.min(a, b, c);
+  }
+  if (!checkNaN(a) && !checkNaN(b) && checkNaN(c) && !checkNaN(d)) {
+    return Math.min(a, b, d);
+  }
+  if (!checkNaN(a) && checkNaN(b) && !checkNaN(c) && !checkNaN(d)) {
+    return Math.min(a, c, d);
+  }
+  if (checkNaN(a) && !checkNaN(b) && checkNaN(c) && checkNaN(d)) {
+    return b;
+  }
+  if (checkNaN(a) && !checkNaN(b) && !checkNaN(c) && checkNaN(d)) {
+    return Math.min(b, c);
+  }
+  if (checkNaN(a) && !checkNaN(b) && checkNaN(c) && !checkNaN(d)) {
+    return Math.min(b, d);
+  }
+  if (checkNaN(a) && !checkNaN(b) && !checkNaN(c) && !checkNaN(d)) {
+    return Math.min(b, c, d);
+  }
+  if (checkNaN(a) && checkNaN(b) && !checkNaN(c) && checkNaN(d)) {
+    return c;
+  }
+  if (checkNaN(a) && checkNaN(b) && !checkNaN(c) && !checkNaN(d)) {
+    return Math.min(c, d);
+  }
+  if (checkNaN(a) && checkNaN(b) && checkNaN(c) && !checkNaN(d)) {
+    return d;
+  }
+
+  return Math.min(a, b, c, d);
 };
 
 const min = (a, b, c, d) => {
@@ -264,7 +320,7 @@ const min = (a, b, c, d) => {
 
 const toPar = (round, tournament, number) => {
   const scores = round.map(x => x.scores);
-  const best = _.zipWith(...scores, (a, b, c, d) => min(a, b, c, d));
+  const best = _.zipWith(...scores, (a, b, c, d) => minTest(a, b, c, d));
   const { holes } = tournament.venue.courses[0];
   const reducer = (total, num, i) => (num === 0 ? total : total + (num - holes[i].par));
   const par = best.reduce(reducer, 0);

@@ -15,6 +15,26 @@ const styles = () => ({
   }
 });
 
+const addMisingRounds = (rounds) => {
+  const result = rounds;
+
+  if (rounds.length === 4) {
+    return rounds;
+  }
+
+  let roundStart = rounds.length + 1;
+
+  while (result.length < 4) {
+    const x = {
+      toPar: '-',
+      round: roundStart
+    };
+    result.push(x);
+    roundStart += 1;
+  }
+  return result;
+};
+
 const SummaryCardPlayer = (props) => {
   const {
     classes,
@@ -22,12 +42,14 @@ const SummaryCardPlayer = (props) => {
     name,
     total
   } = props;
+  const filteredRounds = addMisingRounds(rounds);
+
   return (
     <TableRow>
       <TableCell align="center" component="th" scope="row">
         {name}
       </TableCell>
-      {rounds.map(x => (
+      {filteredRounds.map(x => (
         <TableCell key={x.round} align="center" scope="row">
           {x.toPar}
         </TableCell>
