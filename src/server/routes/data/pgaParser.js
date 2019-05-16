@@ -23,7 +23,7 @@ const getCurrentTournament = () => {
   // (x.start_date <= cur && x.end_date <= end.toISOString().split('T')[0]));
   const result = schedule.tournaments.filter(x => x.start_date <= cur);
   // console.log('First: ', result[0].name);
-  console.log('Last: ', result[result.length - 1].name);
+  // console.log('Last: ', result[result.length - 1].name);
 
   return result[result.length - 1];
 };
@@ -74,6 +74,22 @@ const saveScores = async (roundInfo) => {
   }
 };
 
+const deleteCurrentGamesCache = async () => {
+  const currentGames = cache.get('currentGames');
+
+  if (currentGames === undefined) {
+    return;
+  }
+
+  currentGames.forEach((gameKey) => {
+    const game = cache.get(gameKey);
+
+    if (game !== undefined) {
+      cache.del(gameKey);
+    }
+  });
+};
+
 const updateScores = async () => {
   const round = getCurrentRound();
   console.log('Current round: ', round);
@@ -92,8 +108,10 @@ const updateScores = async () => {
     json: true
   };
   const response = await rp(options);
-  saveScores(response);
+  await saveScores(response);
   console.log('Scores updated!');
+  await deleteCurrentGamesCache();
+  console.log('Game cache refreshed!');
 };
 
 const getWorldRankings = async () => {
@@ -171,10 +189,22 @@ const saveNewGame = async (players) => {
   }
 };
 
+const updateCurrentGames = async (gameKey) => {
+  const currentGames = cache.get('currentGames');
+
+  if (currentGames === undefined) {
+    cache.set('currentGames', [gameKey]);
+    return;
+  }
+  currentGames.push(gameKey);
+};
+
 const getCurrentRoundScores = async (request) => {
   try {
     const { gameId, round } = request;
-    const currentRound = cache.get(`${gameId}-${round}`);
+    const gameKey = `${gameId}-${round}`;
+    const currentRound = cache.get(gameKey);
+
     if (currentRound !== undefined) {
       console.log('Cache used for current round');
       return currentRound;
@@ -202,7 +232,10 @@ const getCurrentRoundScores = async (request) => {
       golfers[0].holes = holes;
       result.push(golfers);
     });
-    cache.set(`${gameId}-${round}`, result, 900); // Figure out way to del cache on score update
+    cache.set(`${gameId}-${round}`, result, 1800); // Figure out way to del cache on score update
+
+    updateCurrentGames(gameKey);
+
     return result;
   } catch (error) {
     console.log('Get current round error: ', error);
