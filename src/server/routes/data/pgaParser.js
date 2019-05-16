@@ -110,8 +110,8 @@ const updateScores = async () => {
   const response = await rp(options);
   await saveScores(response);
   console.log('Scores updated!');
-  await deleteCurrentGamesCache();
-  console.log('Game cache refreshed!');
+  // await deleteCurrentGamesCache();
+  // console.log('Game cache refreshed!');
 };
 
 const getWorldRankings = async () => {
@@ -237,7 +237,7 @@ const getCurrentRoundScores = async (request) => {
     });
     cache.set(`${gameId}-${round}`, result, 3600); // Figure out way to del cache on score update
 
-    updateCurrentGames(gameKey);
+    // updateCurrentGames(gameKey);
 
     return result;
   } catch (error) {
