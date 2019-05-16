@@ -50,7 +50,13 @@ const styles = () => ({
 });
 
 const filterScores = (scores) => {
-  const result = scores.filter(x => x !== 0);
+  // const result = scores.filter(x => x !== 0);
+  const result = scores.map((x) => {
+    if (x === 0) {
+      return '-';
+    }
+    return x;
+  });
 
   while (result.length < 18) {
     result.push('-');
