@@ -88,6 +88,7 @@ const deleteCurrentGamesCache = async () => {
       cache.del(gameKey);
     }
   });
+  console.log('Game cache refreshed!');
 };
 
 const updateScores = async () => {
@@ -108,10 +109,9 @@ const updateScores = async () => {
     json: true
   };
   const response = await rp(options);
-  await saveScores(response);
+  saveScores(response);
   console.log('Scores updated!');
-  // await deleteCurrentGamesCache();
-  // console.log('Game cache refreshed!');
+  deleteCurrentGamesCache();
 };
 
 const getWorldRankings = async () => {
@@ -197,21 +197,19 @@ const updateCurrentGames = async (gameKey) => {
     return;
   }
   currentGames.push(gameKey);
+  cache.set('currentGames', currentGames);
 };
 
 const getCurrentRoundScores = async (request) => {
   try {
     const { gameId, round } = request;
     const gameKey = `${gameId}-${round}`;
-    /*
     const currentRound = cache.get(gameKey);
 
-    
     if (currentRound !== undefined) {
       console.log('Cache used for current round');
       return currentRound;
     }
-    */
 
     const query = 'SELECT * FROM public.game_info JOIN public.game_info_player ON'
     + ' (public.game_info_player.game_id = public.game_info.game_id) JOIN public.golfer_scores'
@@ -235,9 +233,9 @@ const getCurrentRoundScores = async (request) => {
       golfers[0].holes = holes;
       result.push(golfers);
     });
-    cache.set(`${gameId}-${round}`, result, 3600); // Figure out way to del cache on score update
+    cache.set(`${gameId}-${round}`, result, 900); // Figure out way to del cache on score update
 
-    // updateCurrentGames(gameKey);
+    updateCurrentGames(gameKey);
 
     return result;
   } catch (error) {
