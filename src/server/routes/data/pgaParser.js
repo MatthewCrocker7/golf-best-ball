@@ -202,7 +202,7 @@ const getCurrentRoundScores = async (request) => {
       golfers[0].holes = holes;
       result.push(golfers);
     });
-    cache.set(`${gameId}-${round}`, result, 1800);
+    cache.set(`${gameId}-${round}`, result, 900); // Figure out way to del cache on score update
     return result;
   } catch (error) {
     console.log('Get current round error: ', error);
