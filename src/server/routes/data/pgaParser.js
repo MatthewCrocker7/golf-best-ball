@@ -204,12 +204,14 @@ const getCurrentRoundScores = async (request) => {
   try {
     const { gameId, round } = request;
     const gameKey = `${gameId}-${round}`;
+    /*
     const currentRound = cache.get(gameKey);
 
     if (currentRound !== undefined) {
       console.log('Cache used for current round');
       return currentRound;
     }
+    */
 
     const query = 'SELECT * FROM public.game_info JOIN public.game_info_player ON'
     + ' (public.game_info_player.game_id = public.game_info.game_id) JOIN public.golfer_scores'
@@ -233,7 +235,7 @@ const getCurrentRoundScores = async (request) => {
       golfers[0].holes = holes;
       result.push(golfers);
     });
-    cache.set(`${gameId}-${round}`, result, 900); // Figure out way to del cache on score update
+    // cache.set(`${gameId}-${round}`, result, 300); // Figure out way to del cache on score update
 
     updateCurrentGames(gameKey);
 
