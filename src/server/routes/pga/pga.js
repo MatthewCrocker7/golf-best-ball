@@ -16,6 +16,7 @@ Must update world golf ranks every Monday
 Must keep track of players, and their golfers
 */
 
+pgaParser.updateScores();
 setInterval(async () => {
   pgaParser.updateScores();
 }, 1800000);
