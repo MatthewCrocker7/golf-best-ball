@@ -19,7 +19,11 @@ const getCurrentTournament = () => {
   const end = new Date();
   end.setDate(end.getDate() + ((4 + 7 - end.getDay()) % 7));
 
-  const result = schedule.tournaments.filter(x => (x.start_date <= cur && x.end_date <= end.toISOString().split('T')[0]));
+  // const result = schedule.tournaments.filter(x =>
+  // (x.start_date <= cur && x.end_date <= end.toISOString().split('T')[0]));
+  const result = schedule.tournaments.filter(x => x.start_date <= cur);
+  // console.log('First: ', result[0].name);
+  console.log('Last: ', result[result.length - 1].name);
 
   return result[result.length - 1];
 };
@@ -72,6 +76,7 @@ const saveScores = async (roundInfo) => {
 
 const updateScores = async () => {
   const round = getCurrentRound();
+  console.log('Current round: ', round);
   if (round < 0) {
     // Doesn't update scores on Monday, Tuesday, Wednesday
     return;
@@ -183,6 +188,9 @@ const getCurrentRoundScores = async (request) => {
     const params = [gameId, round];
     const response = await db.query(query, params);
 
+    if (response.rows.length <= 0) {
+      return [];
+    }
     const tournament = getTournamentById(response.rows[0].tournament_id);
     const { holes } = tournament.venue.courses[0];
     console.log(tournament.name);
@@ -194,7 +202,7 @@ const getCurrentRoundScores = async (request) => {
       golfers[0].holes = holes;
       result.push(golfers);
     });
-    cache.set(`${gameId}-${round}`, result);
+    cache.set(`${gameId}-${round}`, result, 1800);
     return result;
   } catch (error) {
     console.log('Get current round error: ', error);

@@ -79,9 +79,9 @@ const GolfSymbol = (props) => {
       </div>
     );
   }
-  if (par === 0) {
+  if (par >= 2) {
     return (
-      <div className={style.par}>
+      <div className={style.doubleBogie}>
         <Typography>{score}</Typography>
       </div>
     );
@@ -94,7 +94,7 @@ const GolfSymbol = (props) => {
     );
   }
   return (
-    <div className={style.doubleBogie}>
+    <div className={style.par}>
       <Typography>{score}</Typography>
     </div>
   );
