@@ -232,7 +232,7 @@ const getCurrentRoundScores = async (request) => {
       golfers[0].holes = holes;
       result.push(golfers);
     });
-    cache.set(`${gameId}-${round}`, result, 1800); // Figure out way to del cache on score update
+    cache.set(`${gameId}-${round}`, result, 3600); // Figure out way to del cache on score update
 
     updateCurrentGames(gameKey);
 
