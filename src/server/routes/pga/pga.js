@@ -18,7 +18,8 @@ Must keep track of players, and their golfers
 
 setInterval(async () => {
   pgaParser.updateScores();
-}, 14400000);
+}, 1800000);
+// 14400000
 
 router.get('/getWorldRankings', async (req, res) => {
   const rankings = await pgaParser.getWorldRankings();
@@ -45,7 +46,11 @@ router.post('/newGame/', async (req, res) => {
 router.get('/getCurrentRound/:gameId/:round', async (req, res) => {
   const response = await pgaParser.getCurrentRoundScores(req.params);
 
-  res.send(response);
+  if (response.length === 0) {
+    res.sendStatus(200);
+  } else {
+    res.send(response);
+  }
 });
 
 router.get('/getAllRounds/:gameId', async (req, res) => {

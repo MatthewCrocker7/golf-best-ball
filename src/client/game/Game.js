@@ -27,7 +27,7 @@ class Game extends React.Component {
     super(props);
 
     this.state = {
-      currentRound: []
+      currentRound: [],
     };
   }
 
@@ -45,7 +45,7 @@ class Game extends React.Component {
   getCurrentRound = async () => {
     const { round } = this.props;
     // const round = 4;
-    const gameId = '21111111-1111-1111-1111-111111111111';
+    const gameId = '31111111-1111-1111-1111-111111111111';
     try {
       let response = await fetch(`/api/pga/getCurrentRound/${gameId}/${round}`, {
         method: 'GET',
@@ -53,9 +53,11 @@ class Game extends React.Component {
           'Content-Type': 'application/json',
         },
       });
-      response = await response.json();
-      console.log(response);
-      this.setState({ currentRound: response });
+      if (response.ok) {
+        response = await response.json();
+        console.log(response);
+        this.setState({ currentRound: response });
+      }
     } catch (error) {
       console.log('Get current round error: ', error);
       throw error;
