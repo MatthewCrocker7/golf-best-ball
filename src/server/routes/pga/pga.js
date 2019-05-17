@@ -19,7 +19,7 @@ Must keep track of players, and their golfers
 // pgaParser.updateScores();
 setInterval(async () => {
   pgaParser.updateScores();
-}, 600000);
+}, process.env.REFRESH_RATE);
 // 14400000
 
 router.get('/getWorldRankings', async (req, res) => {

@@ -239,7 +239,7 @@ const getCurrentRoundScores = async (request) => {
       // golfers[0].holes = holes;
       result.push(golfers);
     });
-    cache.set(`${gameId}-${round}`, result, 300); // Figure out way to del cache on score update
+    cache.set(`${gameId}-${round}`, result, 600); // Figure out way to del cache on score update
 
     updateCurrentGames(gameKey);
 
@@ -252,7 +252,7 @@ const getCurrentRoundScores = async (request) => {
 
 const checkNaN = x => (x === 0 || !x);
 
-const minTest = (a, b, c, d) => {
+const min = (a, b, c, d) => {
   if (checkNaN(a) && checkNaN(b) && checkNaN(c) && checkNaN(d)) {
     return 0;
   }
@@ -302,25 +302,9 @@ const minTest = (a, b, c, d) => {
   return Math.min(a, b, c, d);
 };
 
-const min = (a, b, c, d) => {
-  if (!a) {
-    return 0;
-  }
-  if (!b) {
-    return a;
-  }
-  if (!c) {
-    return Math.min(a, b);
-  }
-  if (!d) {
-    return Math.min(a, b, c);
-  }
-  return Math.min(a, b, c, d);
-};
-
 const toPar = (round, tournament, number) => {
   const scores = round.map(x => x.scores);
-  const best = _.zipWith(...scores, (a, b, c, d) => minTest(a, b, c, d));
+  const best = _.zipWith(...scores, (a, b, c, d) => min(a, b, c, d));
   const { holes } = tournament.venue.courses[0];
   const reducer = (total, num, i) => (num === 0 ? total : total + (num - holes[i].par));
   const par = best.reduce(reducer, 0);
