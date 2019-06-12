@@ -176,7 +176,7 @@ const saveNewGame = async (players) => {
     + ' (game_id, tournament_id, tournament_name)'
     + ' VALUES ($1, $2, $3) ON CONFLICT (game_id)'
     + ' DO UPDATE SET game_id = $1, tournament_id = $2, tournament_name = $3';
-    const id = '31111111-1111-1111-1111-111111111111';
+    const id = '61111111-1111-1111-1111-111111111111';
     const tournament = getNextTournament();
     const params = [id, tournament.id, tournament.name];
     const response = await db.query(query, params);
