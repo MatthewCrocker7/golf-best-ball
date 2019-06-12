@@ -45,7 +45,7 @@ class Game extends React.Component {
   getCurrentRound = async () => {
     const { round } = this.props;
     // const round = 4;
-    const gameId = '31111111-1111-1111-1111-111111111111';
+    const gameId = '61111111-1111-1111-1111-111111111111';
     try {
       let response = await fetch(`/api/pga/getCurrentRound/${gameId}/${round}`, {
         method: 'GET',
