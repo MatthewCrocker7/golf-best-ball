@@ -4245,7 +4245,7 @@ module.exports = {
             yardage: 381
           }, {
             number: 2,
-            par: 5,
+            par: 4,
             yardage: 502
           }, {
             number: 3,
