@@ -114,6 +114,26 @@ const updateScores = async () => {
   deleteCurrentGamesCache();
 };
 
+const updateScoreByRound = async (round) => {
+  console.log('Refresh round: ', round);
+
+  const tournament = getCurrentTournament();
+  console.log('The current tournament is: ', tournament.name);
+  console.log('The current tournament is: ', tournament.id);
+
+  const uri = `https://api.sportradar.us/golf-t2/scorecards/pga/2019/tournaments/${tournament.id}/rounds/${round}/scores.json?api_key=${KEY}`;
+  const options = {
+    uri,
+    json: true
+  };
+  const response = await rp(options);
+  await saveScores(response);
+  console.log('Scores updated!');
+  await deleteCurrentGamesCache();
+
+  return response;
+};
+
 const getWorldRankings = async () => {
   const players = cache.get('worldRankings');
   if (players === undefined) {
@@ -379,6 +399,7 @@ const getTotalRoundScores = async (gameId) => {
 module.exports = {
   getNextTournament,
   updateScores,
+  updateScoreByRound,
   getWorldRankings,
   saveNewGame,
   getCurrentRoundScores,

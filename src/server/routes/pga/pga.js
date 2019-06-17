@@ -17,10 +17,21 @@ Must keep track of players, and their golfers
 */
 
 // pgaParser.updateScores();
+/*
 setInterval(async () => {
   pgaParser.updateScores();
 }, process.env.REFRESH_RATE);
+*/
 // 14400000
+
+router.get('/refreshScores/:round', async (req, res) => {
+  console.log(req.params);
+  const { round } = req.params;
+  const roundResults = await pgaParser.updateScoreByRound(round);
+  console.log(roundResults);
+
+  res.send(roundResults);
+});
 
 router.get('/getWorldRankings', async (req, res) => {
   const rankings = await pgaParser.getWorldRankings();
