@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import RoundSelector from './gameComponents/RoundSelector';
+import RefreshRound from './gameComponents/RefreshRound';
 import PlayerScoreCard from './PlayerScoreCard';
 
 const styles = () => ({
