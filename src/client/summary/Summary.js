@@ -36,7 +36,7 @@ class Summary extends React.Component {
   }
 
   getAllRounds = async () => {
-    const gameId = '61111111-1111-1111-1111-111111111111';
+    const gameId = '71111111-1111-1111-1111-111111111111';
     try {
       let response = await fetch(`/api/pga/getAllRounds/${gameId}`, {
         method: 'GET',

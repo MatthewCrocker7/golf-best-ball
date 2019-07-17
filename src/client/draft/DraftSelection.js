@@ -52,24 +52,6 @@ const DraftSelection = (props) => {
   );
 };
 
-/*
-      <List dense className={classes.listRoot} subheader={<li />}>
-        {players.map(player => (
-          <li key={`${player.name}`} className={classes.listSection}>
-            <ul className={classes.ul}>
-              <ListSubheader disableSticky
-              className={classes.listHeader}>{`${player.name}`}</ListSubheader>
-              {player.golfers.map(x => (
-                <ListItem key={`${player}-${x}`}>
-                  <ListItemText primary={`${x}`} />
-                </ListItem>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </List>
-*/
-
 DraftSelection.propTypes = {
   classes: PropTypes.object.isRequired,
   players: PropTypes.array.isRequired
