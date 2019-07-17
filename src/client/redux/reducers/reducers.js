@@ -37,11 +37,11 @@ const initState = {
     id: ''
   },
   players: [
-    { name: 'Dentyn', id: '21111111-1111-1111-1111-111111111111', golfers: [] },
-    { name: 'Matthew', id: '11111111-1111-1111-1111-111111111111', golfers: [] },
     { name: 'Andy', id: '51111111-1111-1111-1111-111111111111', golfers: [] },
     { name: 'Drew', id: '41111111-1111-1111-1111-111111111111', golfers: [] },
     { name: 'Jonathan', id: '31111111-1111-1111-1111-111111111111', golfers: [] },
+    { name: 'Matthew', id: '11111111-1111-1111-1111-111111111111', golfers: [] },
+    { name: 'Dentyn', id: '21111111-1111-1111-1111-111111111111', golfers: [] },
   ],
   draft: {
     index: 0,
