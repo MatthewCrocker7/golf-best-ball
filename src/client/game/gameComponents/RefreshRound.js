@@ -47,7 +47,7 @@ class RefreshRound extends React.Component {
   handleClose = async (event) => {
     console.log(event);
 
-    const round = 4;
+    const round = 1;
     console.log(round);
 
 
