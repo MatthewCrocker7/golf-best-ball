@@ -28,7 +28,7 @@ const App = (props) => {
     <div className={classes.root}>
       <Header />
       <NavBar />
-      {nav === 0 && <Draft />}
+      {nav === 0 && <Game />}
       {nav === 1 && <Game />}
       {nav === 2 && <Summary />}
     </div>
