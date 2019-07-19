@@ -4857,7 +4857,7 @@ module.exports = {
             description: 'Himalayas'
           }, {
             number: 11,
-            par: 5,
+            par: 4,
             yardage: 473,
             description: 'Tavern'
           }, {
